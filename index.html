@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Maze - AI Knowledge Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1 class="game-title">AI Maze</h1>
+            <p class="subtitle">Test Your Artificial Intelligence Knowledge</p>
+            <div class="instructions">
+                <h3>How to Play</h3>
+                <ul>
+                    <li>Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to navigate</li>
+                    <li>Collect the glowing dots to earn points</li>
+                    <li>Question bubbles spawn periodically - collect them!</li>
+                    <li><span class="highlight-green">Correct answers</span> freeze ghosts and award bonus points</li>
+                    <li><span class="highlight-purple">Wrong answers</span> spawn additional ghosts</li>
+                    <li>Collect and answer all 3 bubbles to complete the game</li>
+                    <li>Avoid contact with the ghosts</li>
+                </ul>
+            </div>
+            <button id="start-btn" class="game-btn">Start Game</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div id="game-header">
+                <div class="stat">
+                    <span class="stat-label">Score</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Lives</span>
+                    <span id="lives" class="stat-value">&#10084;&#10084;&#10084;</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Questions</span>
+                    <span id="questions-count" class="stat-value">0/3</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Next Bubble</span>
+                    <span id="bubble-timer" class="stat-value">3s</span>
+                </div>
+            </div>
+            <canvas id="game-canvas"></canvas>
+        </div>
+
+        <!-- Question Modal -->
+        <div id="question-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 class="question-title">AI Question</h2>
+                <p id="question-text" class="question-text"></p>
+                <div id="answers-container" class="answers-container"></div>
+                <div id="feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen hidden">
+            <h1 class="results-title">Game Complete</h1>
+            <div class="results-container">
+                <div class="result-item">
+                    <span class="result-label">Final Score</span>
+                    <span id="final-score" class="result-value">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Questions Correct</span>
+                    <span id="correct-answers" class="result-value">0/3</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Quiz Points</span>
+                    <span id="quiz-points" class="result-value">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Dots Collected</span>
+                    <span id="dots-collected" class="result-value">0</span>
+                </div>
+            </div>
+            <div id="grade" class="grade"></div>
+            <button id="play-again-btn" class="game-btn">Play Again</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen hidden">
+            <h1 class="gameover-title">Game Over</h1>
+            <p class="gameover-subtitle">The ghosts caught you!</p>
+            <div class="results-container">
+                <div class="result-item">
+                    <span class="result-label">Final Score</span>
+                    <span id="gameover-score" class="result-value">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Questions Answered</span>
+                    <span id="gameover-questions" class="result-value">0/3</span>
+                </div>
+            </div>
+            <button id="retry-btn" class="game-btn">Try Again</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

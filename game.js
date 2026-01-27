@@ -1,0 +1,1029 @@
+// AI Maze - Pac-Man Style Game with AI Quiz
+
+// ==================== GAME CONFIGURATION ====================
+const CONFIG = {
+    cellSize: 28,
+    mazeWidth: 25,
+    mazeHeight: 22,
+    tunnelRow: 10, // The row where wrap-around is allowed
+    playerSpeed: 4,
+    ghostSpeed: 2,
+    bubbleSpawnInterval: 3000, // 3 seconds
+    ghostFreezeTime: 5000, // 5 seconds freeze on correct answer
+    totalQuestions: 3,
+    pointsPerDot: 10,
+    pointsPerQuestion: 100,
+    pointsPerGhost: 200,
+    lives: 3
+};
+
+// ==================== MAZE LAYOUT ====================
+// 0 = path, 1 = wall, 2 = dot, 3 = empty (no dot)
+const MAZE_TEMPLATE = [
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,2,1,1,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,2,1],
+    [1,2,1,1,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,2,1],
+    [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,2,1,1,1,2,1,2,1,1,1,1,1,1,1,1,1,2,1,2,1,1,1,2,1],
+    [1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1],
+    [1,1,1,1,1,2,1,1,1,1,1,0,1,0,1,1,1,1,1,2,1,1,1,1,1],
+    [1,1,1,1,1,2,1,0,0,0,0,0,0,0,0,0,0,0,1,2,1,1,1,1,1],
+    [1,1,1,1,1,2,1,0,1,1,1,0,0,0,1,1,1,0,1,2,1,1,1,1,1],
+    [0,0,0,0,0,2,0,0,1,0,0,0,0,0,0,0,1,0,0,2,0,0,0,0,0],
+    [1,1,1,1,1,2,1,0,1,1,1,1,1,1,1,1,1,0,1,2,1,1,1,1,1],
+    [1,1,1,1,1,2,1,0,0,0,0,0,0,0,0,0,0,0,1,2,1,1,1,1,1],
+    [1,1,1,1,1,2,1,0,1,1,1,1,1,1,1,1,1,0,1,2,1,1,1,1,1],
+    [1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,2,1,1,1,2,1,1,1,1,1,2,1,2,1,1,1,1,1,2,1,1,1,2,1],
+    [1,2,2,2,1,2,2,2,2,2,2,2,0,2,2,2,2,2,2,2,1,2,2,2,1],
+    [1,1,1,2,1,2,1,2,1,1,1,1,1,1,1,1,1,2,1,2,1,2,1,1,1],
+    [1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1,2,2,2,2,2,1],
+    [1,2,1,1,1,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,1,1,1,2,1],
+    [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+];
+
+// ==================== AI QUESTIONS ====================
+const AI_QUESTIONS = [
+    {
+        question: "What does AI stand for?",
+        answers: ["Artificial Intelligence", "Automated Integration", "Advanced Internet", "Applied Informatics"],
+        correct: 0
+    },
+    {
+        question: "Which company developed ChatGPT?",
+        answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+        correct: 2
+    },
+    {
+        question: "What is machine learning?",
+        answers: [
+            "Programming explicit rules for every scenario",
+            "Systems that learn from data to improve performance",
+            "Robots that physically learn to move",
+            "Computers that replace human workers"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is a neural network inspired by?",
+        answers: ["Computer circuits", "The human brain", "Spider webs", "Social networks"],
+        correct: 1
+    },
+    {
+        question: "What is 'training' in machine learning?",
+        answers: [
+            "Teaching robots physical exercises",
+            "The process of a model learning from data",
+            "Human operators learning to use AI",
+            "Installing software updates"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is a 'Large Language Model' (LLM)?",
+        answers: [
+            "A very big dictionary",
+            "An AI trained on vast text data to understand and generate language",
+            "A programming language for large companies",
+            "A type of computer memory"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is 'deep learning'?",
+        answers: [
+            "Learning while sleeping",
+            "Neural networks with many layers",
+            "Studying AI for many years",
+            "Underground data centers"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is a 'prompt' in AI?",
+        answers: [
+            "A reminder notification",
+            "The input text given to an AI model",
+            "A type of AI error",
+            "The AI's response"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is 'computer vision'?",
+        answers: [
+            "A computer screen",
+            "AI that can interpret and understand images",
+            "Virtual reality glasses",
+            "High-resolution displays"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is the 'Turing Test'?",
+        answers: [
+            "A programming certification",
+            "A test to see if AI can exhibit human-like intelligence",
+            "A security vulnerability scan",
+            "A speed benchmark for computers"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is 'natural language processing' (NLP)?",
+        answers: [
+            "Speaking naturally to computers",
+            "AI understanding and generating human language",
+            "A type of keyboard",
+            "Voice recording technology"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is 'reinforcement learning'?",
+        answers: [
+            "Learning by repetition only",
+            "Learning through rewards and penalties",
+            "Strengthening computer hardware",
+            "Backup learning systems"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is an AI 'hallucination'?",
+        answers: [
+            "AI having dreams",
+            "AI generating false or made-up information confidently",
+            "Visual glitches on screen",
+            "AI refusing to answer"
+        ],
+        correct: 1
+    },
+    {
+        question: "What is 'generative AI'?",
+        answers: [
+            "AI that generates electricity",
+            "AI that creates new content like text, images, or music",
+            "The next generation of computers",
+            "AI that only analyzes data"
+        ],
+        correct: 1
+    },
+    {
+        question: "What does GPU stand for in AI context?",
+        answers: [
+            "General Purpose Unit",
+            "Graphics Processing Unit",
+            "Gigabyte Power Usage",
+            "Global Processing Utility"
+        ],
+        correct: 1
+    }
+];
+
+// ==================== GAME STATE ====================
+let canvas, ctx;
+let gameState = {
+    maze: [],
+    player: null,
+    ghosts: [],
+    bubbles: [],
+    score: 0,
+    lives: CONFIG.lives,
+    questionsAnswered: 0,
+    correctAnswers: 0,
+    quizPoints: 0,
+    dotsCollected: 0,
+    totalDots: 0,
+    gameRunning: false,
+    gamePaused: false,
+    ghostsFrozen: false,
+    bubbleTimer: CONFIG.bubbleSpawnInterval / 1000,
+    usedQuestions: [],
+    currentQuestion: null
+};
+
+let lastTime = 0;
+let bubbleSpawnTimer = 0;
+let ghostFreezeTimer = 0;
+
+// ==================== DOM ELEMENTS ====================
+const screens = {
+    start: document.getElementById('start-screen'),
+    game: document.getElementById('game-screen'),
+    results: document.getElementById('results-screen'),
+    gameover: document.getElementById('gameover-screen'),
+    questionModal: document.getElementById('question-modal')
+};
+
+// ==================== INITIALIZATION ====================
+function init() {
+    canvas = document.getElementById('game-canvas');
+    ctx = canvas.getContext('2d');
+    
+    canvas.width = CONFIG.mazeWidth * CONFIG.cellSize;
+    canvas.height = CONFIG.mazeHeight * CONFIG.cellSize;
+    
+    // Event listeners
+    document.getElementById('start-btn').addEventListener('click', startGame);
+    document.getElementById('play-again-btn').addEventListener('click', startGame);
+    document.getElementById('retry-btn').addEventListener('click', startGame);
+    
+    document.addEventListener('keydown', handleKeyDown);
+}
+
+function startGame() {
+    // Reset game state
+    gameState = {
+        maze: JSON.parse(JSON.stringify(MAZE_TEMPLATE)),
+        player: { x: 12, y: 16, direction: null, nextDirection: null },
+        ghosts: [
+            { x: 12, y: 10, direction: 'up', color: '#D72339' }, // Siemens Red ghost
+            { x: 11, y: 10, direction: 'left', color: '#FF9000' }, // Siemens Orange ghost
+        ],
+        bubbles: [],
+        floatingTexts: [],
+        score: 0,
+        lives: CONFIG.lives,
+        questionsAnswered: 0,
+        correctAnswers: 0,
+        quizPoints: 0,
+        dotsCollected: 0,
+        totalDots: 0,
+        gameRunning: true,
+        gamePaused: false,
+        ghostsFrozen: false,
+        bubbleTimer: CONFIG.bubbleSpawnInterval / 1000,
+        usedQuestions: [],
+        currentQuestion: null
+    };
+    
+    // Count total dots
+    for (let y = 0; y < CONFIG.mazeHeight; y++) {
+        for (let x = 0; x < CONFIG.mazeWidth; x++) {
+            if (gameState.maze[y][x] === 2) {
+                gameState.totalDots++;
+            }
+        }
+    }
+    
+    bubbleSpawnTimer = 0;
+    ghostFreezeTimer = 0;
+    lastTime = performance.now();
+    
+    // Show game screen
+    showScreen('game');
+    updateUI();
+    
+    // Start game loop
+    requestAnimationFrame(gameLoop);
+}
+
+// ==================== GAME LOOP ====================
+function gameLoop(currentTime) {
+    if (!gameState.gameRunning) return;
+    
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+    
+    if (!gameState.gamePaused) {
+        update(deltaTime);
+        render();
+    }
+    
+    requestAnimationFrame(gameLoop);
+}
+
+function update(deltaTime) {
+    // Update bubble spawn timer
+    bubbleSpawnTimer += deltaTime;
+    gameState.bubbleTimer = Math.max(0, Math.ceil((CONFIG.bubbleSpawnInterval - bubbleSpawnTimer) / 1000));
+    
+    if (bubbleSpawnTimer >= CONFIG.bubbleSpawnInterval && gameState.questionsAnswered < CONFIG.totalQuestions) {
+        spawnBubble();
+        bubbleSpawnTimer = 0;
+    }
+    
+    // Update ghost freeze timer
+    if (gameState.ghostsFrozen) {
+        ghostFreezeTimer -= deltaTime;
+        if (ghostFreezeTimer <= 0) {
+            gameState.ghostsFrozen = false;
+        }
+    }
+    
+    // Update player
+    updatePlayer();
+    
+    // Update ghosts
+    if (!gameState.ghostsFrozen) {
+        updateGhosts();
+    }
+    
+    // Check collisions
+    checkCollisions();
+    
+    // Update UI
+    updateUI();
+}
+
+// ==================== PLAYER MOVEMENT ====================
+function updatePlayer() {
+    const player = gameState.player;
+    
+    // Check if we can change to the requested direction
+    if (player.nextDirection && canMove(player.x, player.y, player.nextDirection)) {
+        const oldDirection = player.direction;
+        player.direction = player.nextDirection;
+        
+        // Snap to grid center when changing direction
+        const isVertical = player.direction === 'up' || player.direction === 'down';
+        const wasVertical = oldDirection === 'up' || oldDirection === 'down';
+        
+        if (isVertical && !wasVertical) {
+            // Changing to vertical movement - snap X to center
+            player.x = Math.round(player.x);
+        } else if (!isVertical && wasVertical) {
+            // Changing to horizontal movement - snap Y to center
+            player.y = Math.round(player.y);
+        }
+    }
+    
+    if (player.direction && canMove(player.x, player.y, player.direction)) {
+        const speed = CONFIG.playerSpeed * 0.05;
+        
+        switch (player.direction) {
+            case 'up': player.y -= speed; break;
+            case 'down': player.y += speed; break;
+            case 'left': player.x -= speed; break;
+            case 'right': player.x += speed; break;
+        }
+        
+        // Wrap around only on tunnel row
+        const playerRow = Math.floor(player.y + 0.5);
+        if (playerRow === CONFIG.tunnelRow) {
+            if (player.x < 0) player.x = CONFIG.mazeWidth - 1;
+            if (player.x >= CONFIG.mazeWidth) player.x = 0;
+        }
+    }
+    
+    // Collect dots
+    const cellX = Math.floor(player.x + 0.5);
+    const cellY = Math.floor(player.y + 0.5);
+    
+    if (cellY >= 0 && cellY < CONFIG.mazeHeight && cellX >= 0 && cellX < CONFIG.mazeWidth) {
+        if (gameState.maze[cellY][cellX] === 2) {
+            gameState.maze[cellY][cellX] = 0;
+            gameState.score += CONFIG.pointsPerDot;
+            gameState.dotsCollected++;
+        }
+    }
+    
+    // Check bubble collision
+    for (let i = gameState.bubbles.length - 1; i >= 0; i--) {
+        const bubble = gameState.bubbles[i];
+        const dist = Math.sqrt(Math.pow(player.x - bubble.x, 2) + Math.pow(player.y - bubble.y, 2));
+        
+        if (dist < 0.8) {
+            collectBubble(i);
+            break;
+        }
+    }
+}
+
+function canMove(x, y, direction) {
+    let newX = x;
+    let newY = y;
+    const offset = 0.4;
+    
+    switch (direction) {
+        case 'up': newY -= offset; break;
+        case 'down': newY += offset; break;
+        case 'left': newX -= offset; break;
+        case 'right': newX += offset; break;
+    }
+    
+    const cellY = Math.floor(newY + 0.5);
+    
+    // Wrap check - only allow on tunnel row
+    if (newX < 0 || newX >= CONFIG.mazeWidth) {
+        return cellY === CONFIG.tunnelRow;
+    }
+    
+    const cellX = Math.floor(newX + 0.5);
+    
+    if (cellY < 0 || cellY >= CONFIG.mazeHeight) return false;
+    if (cellX < 0 || cellX >= CONFIG.mazeWidth) return cellY === CONFIG.tunnelRow;
+    
+    return gameState.maze[cellY][cellX] !== 1;
+}
+
+// ==================== GHOST AI ====================
+function updateGhosts() {
+    gameState.ghosts.forEach(ghost => {
+        const speed = CONFIG.ghostSpeed * 0.05;
+        
+        // Move in current direction
+        let newX = ghost.x;
+        let newY = ghost.y;
+        
+        switch (ghost.direction) {
+            case 'up': newY -= speed; break;
+            case 'down': newY += speed; break;
+            case 'left': newX -= speed; break;
+            case 'right': newX += speed; break;
+        }
+        
+        const ghostRow = Math.floor(newY + 0.5);
+        
+        // Wrap around only on tunnel row
+        if (ghostRow === CONFIG.tunnelRow) {
+            if (newX < 0) newX = CONFIG.mazeWidth - 1;
+            if (newX >= CONFIG.mazeWidth) newX = 0;
+        }
+        
+        const cellX = Math.floor(newX + 0.5);
+        const cellY = Math.floor(newY + 0.5);
+        
+        // Check if can continue in current direction
+        if (cellY >= 0 && cellY < CONFIG.mazeHeight && cellX >= 0 && cellX < CONFIG.mazeWidth && 
+            gameState.maze[cellY][cellX] !== 1) {
+            ghost.x = newX;
+            ghost.y = newY;
+        }
+        
+        // Change direction at intersections
+        const currentCellX = Math.floor(ghost.x + 0.5);
+        const currentCellY = Math.floor(ghost.y + 0.5);
+        
+        if (Math.abs(ghost.x - currentCellX) < 0.1 && Math.abs(ghost.y - currentCellY) < 0.1) {
+            const possibleDirections = [];
+            const opposites = { 'up': 'down', 'down': 'up', 'left': 'right', 'right': 'left' };
+            
+            ['up', 'down', 'left', 'right'].forEach(dir => {
+                if (dir !== opposites[ghost.direction] && canGhostMove(currentCellX, currentCellY, dir)) {
+                    possibleDirections.push(dir);
+                }
+            });
+            
+            if (possibleDirections.length > 0) {
+                // Simple AI: sometimes chase player, sometimes random
+                if (Math.random() < 0.6) {
+                    // Chase player
+                    const player = gameState.player;
+                    let bestDir = ghost.direction;
+                    let bestDist = Infinity;
+                    
+                    possibleDirections.forEach(dir => {
+                        let testX = currentCellX;
+                        let testY = currentCellY;
+                        
+                        switch (dir) {
+                            case 'up': testY--; break;
+                            case 'down': testY++; break;
+                            case 'left': testX--; break;
+                            case 'right': testX++; break;
+                        }
+                        
+                        const dist = Math.sqrt(Math.pow(player.x - testX, 2) + Math.pow(player.y - testY, 2));
+                        if (dist < bestDist) {
+                            bestDist = dist;
+                            bestDir = dir;
+                        }
+                    });
+                    
+                    ghost.direction = bestDir;
+                } else {
+                    // Random direction
+                    ghost.direction = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
+                }
+            } else if (canGhostMove(currentCellX, currentCellY, opposites[ghost.direction])) {
+                ghost.direction = opposites[ghost.direction];
+            }
+        }
+    });
+}
+
+function canGhostMove(x, y, direction) {
+    let newX = x;
+    let newY = y;
+    
+    switch (direction) {
+        case 'up': newY--; break;
+        case 'down': newY++; break;
+        case 'left': newX--; break;
+        case 'right': newX++; break;
+    }
+    
+    // Only allow wrap on tunnel row
+    if (newX < 0 || newX >= CONFIG.mazeWidth) return y === CONFIG.tunnelRow;
+    if (newY < 0 || newY >= CONFIG.mazeHeight) return false;
+    
+    return gameState.maze[newY][newX] !== 1;
+}
+
+// ==================== COLLISIONS ====================
+function checkCollisions() {
+    // Don't check collisions when game is paused (question displayed)
+    if (gameState.gamePaused) return;
+    
+    const player = gameState.player;
+    
+    // Check collisions with each ghost
+    for (let i = gameState.ghosts.length - 1; i >= 0; i--) {
+        const ghost = gameState.ghosts[i];
+        const dist = Math.sqrt(Math.pow(player.x - ghost.x, 2) + Math.pow(player.y - ghost.y, 2));
+        
+        if (dist < 0.7) {
+            if (gameState.ghostsFrozen) {
+                // Catch the ghost when frozen - bonus points!
+                catchGhost(i);
+            } else {
+                // Ghost catches player
+                playerHit();
+                break;
+            }
+        }
+    }
+}
+
+function catchGhost(index) {
+    const ghost = gameState.ghosts[index];
+    
+    // Store position for floating text
+    gameState.floatingTexts = gameState.floatingTexts || [];
+    gameState.floatingTexts.push({
+        x: ghost.x,
+        y: ghost.y,
+        text: '+' + CONFIG.pointsPerGhost,
+        life: 60 // frames to display
+    });
+    
+    // Remove the ghost
+    gameState.ghosts.splice(index, 1);
+    
+    // Award bonus points
+    gameState.score += CONFIG.pointsPerGhost;
+}
+
+function playerHit() {
+    gameState.lives--;
+    
+    if (gameState.lives <= 0) {
+        gameOver();
+    } else {
+        // Reset positions
+        gameState.player.x = 12;
+        gameState.player.y = 16;
+        gameState.player.direction = null;
+        
+        // Reset ghosts
+        gameState.ghosts.forEach((ghost, index) => {
+            ghost.x = 11 + index;
+            ghost.y = 10;
+        });
+    }
+    
+    updateUI();
+}
+
+// ==================== BUBBLES & QUESTIONS ====================
+function spawnBubble() {
+    // Find valid spawn location
+    const validPositions = [];
+    
+    for (let y = 0; y < CONFIG.mazeHeight; y++) {
+        for (let x = 0; x < CONFIG.mazeWidth; x++) {
+            if (gameState.maze[y][x] !== 1) {
+                // Check distance from player
+                const dist = Math.sqrt(Math.pow(gameState.player.x - x, 2) + Math.pow(gameState.player.y - y, 2));
+                if (dist > 5) {
+                    validPositions.push({ x, y });
+                }
+            }
+        }
+    }
+    
+    if (validPositions.length > 0) {
+        const pos = validPositions[Math.floor(Math.random() * validPositions.length)];
+        gameState.bubbles.push({
+            x: pos.x,
+            y: pos.y,
+            pulse: 0
+        });
+    }
+}
+
+function collectBubble(index) {
+    gameState.bubbles.splice(index, 1);
+    showQuestion();
+}
+
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+function showQuestion() {
+    gameState.gamePaused = true;
+    
+    // Get unused question indices and shuffle them
+    const availableIndices = AI_QUESTIONS
+        .map((_, i) => i)
+        .filter(i => !gameState.usedQuestions.includes(i));
+    
+    if (availableIndices.length === 0) {
+        gameState.gamePaused = false;
+        return;
+    }
+    
+    // Pick a random question from available ones
+    const shuffledIndices = shuffleArray(availableIndices);
+    const questionIndex = shuffledIndices[0];
+    gameState.usedQuestions.push(questionIndex);
+    
+    const originalQuestion = AI_QUESTIONS[questionIndex];
+    
+    // Create shuffled answers with original index tracking
+    const answersWithIndex = originalQuestion.answers.map((answer, i) => ({
+        text: answer,
+        originalIndex: i
+    }));
+    const shuffledAnswers = shuffleArray(answersWithIndex);
+    
+    // Find new position of correct answer
+    const newCorrectIndex = shuffledAnswers.findIndex(a => a.originalIndex === originalQuestion.correct);
+    
+    gameState.currentQuestion = {
+        question: originalQuestion.question,
+        answers: shuffledAnswers.map(a => a.text),
+        correct: newCorrectIndex
+    };
+    
+    // Display question
+    document.getElementById('question-text').textContent = gameState.currentQuestion.question;
+    
+    const answersContainer = document.getElementById('answers-container');
+    answersContainer.innerHTML = '';
+    
+    gameState.currentQuestion.answers.forEach((answer, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = answer;
+        btn.addEventListener('click', () => selectAnswer(i));
+        answersContainer.appendChild(btn);
+    });
+    
+    document.getElementById('feedback').classList.add('hidden');
+    screens.questionModal.classList.remove('hidden');
+}
+
+function selectAnswer(answerIndex) {
+    const isCorrect = answerIndex === gameState.currentQuestion.correct;
+    const buttons = document.querySelectorAll('.answer-btn');
+    
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === gameState.currentQuestion.correct) {
+            btn.classList.add('correct');
+        } else if (i === answerIndex && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    const feedback = document.getElementById('feedback');
+    feedback.classList.remove('hidden', 'correct', 'incorrect');
+    
+    if (isCorrect) {
+        feedback.classList.add('correct');
+        feedback.textContent = '✓ Correct! Ghosts are frozen for 5 seconds! +' + CONFIG.pointsPerQuestion + ' points';
+        gameState.score += CONFIG.pointsPerQuestion;
+        gameState.quizPoints += CONFIG.pointsPerQuestion;
+        gameState.correctAnswers++;
+        gameState.ghostsFrozen = true;
+        ghostFreezeTimer = CONFIG.ghostFreezeTime;
+    } else {
+        feedback.classList.add('incorrect');
+        feedback.textContent = '✗ Wrong! A new ghost has spawned!';
+        spawnGhost();
+    }
+    
+    gameState.questionsAnswered++;
+    
+    // Close modal after delay
+    setTimeout(() => {
+        screens.questionModal.classList.add('hidden');
+        gameState.gamePaused = false;
+        
+        // Check if game should end
+        if (gameState.questionsAnswered >= CONFIG.totalQuestions) {
+            showResults();
+        }
+        
+        updateUI();
+    }, 2000);
+}
+
+function spawnGhost() {
+    // Siemens brand colors for ghosts
+    const colors = ['#D72339', '#FF9000', '#206ED9', '#28BF66', '#EDBF00'];
+    const newGhost = {
+        x: 12,
+        y: 10,
+        direction: ['up', 'down', 'left', 'right'][Math.floor(Math.random() * 4)],
+        color: colors[gameState.ghosts.length % colors.length]
+    };
+    gameState.ghosts.push(newGhost);
+}
+
+// ==================== SIEMENS COLORS ====================
+const COLORS = {
+    background: '#000028',      // Deep Blue 900
+    wallFill: '#005159',        // Teal
+    wallBorder: '#009999',      // Petrol
+    dot: '#00FFB9',             // Bold Green
+    bubble: '#FF9000',          // Orange
+    bubbleFill: 'rgba(255, 144, 0, 0.25)',
+    player: '#00CCCC',          // Interactive Coral
+    frozenGhost: '#4C4C68',     // Deep Blue 700
+    text: '#FFFFFF'
+};
+
+// ==================== RENDERING ====================
+function render() {
+    ctx.fillStyle = COLORS.background;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw maze
+    for (let y = 0; y < CONFIG.mazeHeight; y++) {
+        for (let x = 0; x < CONFIG.mazeWidth; x++) {
+            const cell = gameState.maze[y][x];
+            const px = x * CONFIG.cellSize;
+            const py = y * CONFIG.cellSize;
+            
+            if (cell === 1) {
+                // Wall - Siemens Teal
+                ctx.fillStyle = COLORS.wallFill;
+                ctx.fillRect(px, py, CONFIG.cellSize, CONFIG.cellSize);
+                
+                // Wall border effect - Siemens Petrol
+                ctx.strokeStyle = COLORS.wallBorder;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(px + 1, py + 1, CONFIG.cellSize - 2, CONFIG.cellSize - 2);
+            } else if (cell === 2) {
+                // Dot - Siemens Bold Green
+                ctx.fillStyle = COLORS.dot;
+                ctx.beginPath();
+                ctx.arc(px + CONFIG.cellSize / 2, py + CONFIG.cellSize / 2, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+    }
+    
+    // Draw bubbles - Siemens Orange
+    gameState.bubbles.forEach(bubble => {
+        const px = bubble.x * CONFIG.cellSize + CONFIG.cellSize / 2;
+        const py = bubble.y * CONFIG.cellSize + CONFIG.cellSize / 2;
+        
+        bubble.pulse = (bubble.pulse + 0.1) % (Math.PI * 2);
+        const pulseSize = Math.sin(bubble.pulse) * 3;
+        
+        // Glow effect
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = COLORS.bubble;
+        
+        // Outer ring
+        ctx.strokeStyle = COLORS.bubble;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(px, py, 10 + pulseSize, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Inner fill
+        ctx.fillStyle = COLORS.bubbleFill;
+        ctx.beginPath();
+        ctx.arc(px, py, 8 + pulseSize, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Question mark
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = COLORS.text;
+        ctx.font = 'bold 12px Segoe UI, Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('?', px, py);
+    });
+    
+    ctx.shadowBlur = 0;
+    
+    // Draw ghosts
+    gameState.ghosts.forEach(ghost => {
+        const px = ghost.x * CONFIG.cellSize + CONFIG.cellSize / 2;
+        const py = ghost.y * CONFIG.cellSize + CONFIG.cellSize / 2;
+        const size = CONFIG.cellSize * 0.4;
+        
+        // Ghost body
+        ctx.fillStyle = gameState.ghostsFrozen ? COLORS.frozenGhost : ghost.color;
+        ctx.beginPath();
+        ctx.arc(px, py - size * 0.2, size, Math.PI, 0, false);
+        ctx.lineTo(px + size, py + size * 0.6);
+        
+        // Wavy bottom
+        for (let i = 0; i < 4; i++) {
+            const waveX = px + size - (i + 0.5) * (size * 2 / 4);
+            ctx.quadraticCurveTo(waveX + size / 8, py + size * 0.3, waveX, py + size * 0.6);
+        }
+        
+        ctx.closePath();
+        ctx.fill();
+        
+        // Eyes
+        ctx.fillStyle = COLORS.text;
+        ctx.beginPath();
+        ctx.arc(px - size * 0.3, py - size * 0.3, size * 0.25, 0, Math.PI * 2);
+        ctx.arc(px + size * 0.3, py - size * 0.3, size * 0.25, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Pupils
+        ctx.fillStyle = COLORS.background;
+        const pupilOffsetX = ghost.direction === 'left' ? -2 : ghost.direction === 'right' ? 2 : 0;
+        const pupilOffsetY = ghost.direction === 'up' ? -2 : ghost.direction === 'down' ? 2 : 0;
+        ctx.beginPath();
+        ctx.arc(px - size * 0.3 + pupilOffsetX, py - size * 0.3 + pupilOffsetY, size * 0.12, 0, Math.PI * 2);
+        ctx.arc(px + size * 0.3 + pupilOffsetX, py - size * 0.3 + pupilOffsetY, size * 0.12, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    
+    // Draw player (Pac-Man style)
+    const player = gameState.player;
+    const playerPx = player.x * CONFIG.cellSize + CONFIG.cellSize / 2;
+    const playerPy = player.y * CONFIG.cellSize + CONFIG.cellSize / 2;
+    const playerSize = CONFIG.cellSize * 0.4;
+    
+    // Determine mouth angle based on direction
+    let startAngle = 0.2;
+    let endAngle = Math.PI * 2 - 0.2;
+    
+    const time = performance.now() / 100;
+    const mouthOpen = Math.abs(Math.sin(time)) * 0.5;
+    
+    switch (player.direction) {
+        case 'right':
+            startAngle = mouthOpen;
+            endAngle = Math.PI * 2 - mouthOpen;
+            break;
+        case 'left':
+            startAngle = Math.PI + mouthOpen;
+            endAngle = Math.PI - mouthOpen;
+            break;
+        case 'up':
+            startAngle = -Math.PI / 2 + mouthOpen;
+            endAngle = -Math.PI / 2 - mouthOpen + Math.PI * 2;
+            break;
+        case 'down':
+            startAngle = Math.PI / 2 + mouthOpen;
+            endAngle = Math.PI / 2 - mouthOpen + Math.PI * 2;
+            break;
+    }
+    
+    ctx.fillStyle = COLORS.player;
+    ctx.beginPath();
+    ctx.moveTo(playerPx, playerPy);
+    ctx.arc(playerPx, playerPy, playerSize, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fill();
+    
+    // Frozen indicator - Siemens style
+    if (gameState.ghostsFrozen) {
+        ctx.fillStyle = 'rgba(0, 255, 185, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, 40);
+        ctx.fillStyle = COLORS.dot;
+        ctx.font = 'bold 14px Segoe UI, Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('GHOSTS FROZEN - CATCH THEM!', canvas.width / 2, 26);
+    }
+    
+    // Draw floating texts (bonus points)
+    if (gameState.floatingTexts) {
+        for (let i = gameState.floatingTexts.length - 1; i >= 0; i--) {
+            const ft = gameState.floatingTexts[i];
+            const px = ft.x * CONFIG.cellSize + CONFIG.cellSize / 2;
+            const py = ft.y * CONFIG.cellSize + CONFIG.cellSize / 2 - (60 - ft.life) * 0.5;
+            const alpha = ft.life / 60;
+            
+            ctx.fillStyle = `rgba(0, 255, 185, ${alpha})`;
+            ctx.font = 'bold 16px Segoe UI, Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(ft.text, px, py);
+            
+            ft.life--;
+            if (ft.life <= 0) {
+                gameState.floatingTexts.splice(i, 1);
+            }
+        }
+    }
+}
+
+// ==================== UI UPDATES ====================
+function updateUI() {
+    document.getElementById('score').textContent = gameState.score;
+    document.getElementById('lives').textContent = '❤️'.repeat(gameState.lives);
+    document.getElementById('questions-count').textContent = `${gameState.questionsAnswered}/${CONFIG.totalQuestions}`;
+    document.getElementById('bubble-timer').textContent = `${gameState.bubbleTimer}s`;
+}
+
+// ==================== SCREEN MANAGEMENT ====================
+function showScreen(screenName) {
+    Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+    
+    switch (screenName) {
+        case 'start':
+            screens.start.classList.remove('hidden');
+            break;
+        case 'game':
+            screens.game.classList.remove('hidden');
+            break;
+        case 'results':
+            screens.results.classList.remove('hidden');
+            break;
+        case 'gameover':
+            screens.gameover.classList.remove('hidden');
+            break;
+    }
+}
+
+function showResults() {
+    gameState.gameRunning = false;
+    
+    document.getElementById('final-score').textContent = gameState.score;
+    document.getElementById('correct-answers').textContent = `${gameState.correctAnswers}/${gameState.questionsAnswered}`;
+    document.getElementById('quiz-points').textContent = gameState.quizPoints;
+    document.getElementById('dots-collected').textContent = gameState.dotsCollected;
+    
+    // Calculate grade
+    const percentage = (gameState.correctAnswers / CONFIG.totalQuestions) * 100;
+    const gradeEl = document.getElementById('grade');
+    
+    if (percentage >= 80) {
+        gradeEl.textContent = '🏆 AI Expert!';
+        gradeEl.className = 'grade excellent';
+    } else if (percentage >= 50) {
+        gradeEl.textContent = '⭐ AI Enthusiast!';
+        gradeEl.className = 'grade good';
+    } else {
+        gradeEl.textContent = '📚 Keep Learning!';
+        gradeEl.className = 'grade average';
+    }
+    
+    showScreen('results');
+}
+
+function gameOver() {
+    gameState.gameRunning = false;
+    
+    document.getElementById('gameover-score').textContent = gameState.score;
+    document.getElementById('gameover-questions').textContent = `${gameState.questionsAnswered}/${CONFIG.totalQuestions}`;
+    
+    showScreen('gameover');
+}
+
+// ==================== INPUT HANDLING ====================
+function handleKeyDown(e) {
+    if (!gameState.gameRunning || gameState.gamePaused) return;
+    
+    switch (e.key) {
+        case 'ArrowUp':
+        case 'w':
+        case 'W':
+            gameState.player.nextDirection = 'up';
+            e.preventDefault();
+            break;
+        case 'ArrowDown':
+        case 's':
+        case 'S':
+            gameState.player.nextDirection = 'down';
+            e.preventDefault();
+            break;
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+            gameState.player.nextDirection = 'left';
+            e.preventDefault();
+            break;
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+            gameState.player.nextDirection = 'right';
+            e.preventDefault();
+            break;
+    }
+}
+
+// ==================== START ====================
+window.addEventListener('DOMContentLoaded', init);

@@ -1,0 +1,476 @@
+/* Siemens Brand Color Palette */
+:root {
+    /* Deep Blue / Gray Family */
+    --siemens-white: #FFFFFF;
+    --siemens-deep-blue-50: #EBEBEE;
+    --siemens-deep-blue-100: #E5E5E9;
+    --siemens-deep-blue-200: #CCCCD4;
+    --siemens-deep-blue-300: #B3B3BE;
+    --siemens-deep-blue-400: #9999A9;
+    --siemens-deep-blue-500: #7D8099;
+    --siemens-deep-blue-600: #66667E;
+    --siemens-deep-blue-700: #4C4C68;
+    --siemens-deep-blue-750: #333353;
+    --siemens-deep-blue-800: #23233C;
+    --siemens-deep-blue-875: #12122E;
+    --siemens-deep-blue-900: #000028;
+    
+    /* Interactive / Brand Colors */
+    --siemens-teal: #005159;
+    --siemens-petrol: #009999;
+    --siemens-bold-green: #00FFB9;
+    --siemens-interactive-coral: #00CCCC;
+    --siemens-focus: #199FFF;
+    
+    /* Contextual Colors */
+    --siemens-green-500: #28BF66;
+    --siemens-orange-500: #FF9000;
+    --siemens-red-500: #D72339;
+    --siemens-yellow-500: #EDBF00;
+    
+    /* Semantic Aliases */
+    --background: var(--siemens-deep-blue-900);
+    --background-elevated: var(--siemens-deep-blue-800);
+    --background-card: var(--siemens-deep-blue-750);
+    --text-primary: var(--siemens-white);
+    --text-secondary: var(--siemens-deep-blue-300);
+    --text-muted: var(--siemens-deep-blue-400);
+    --accent-primary: var(--siemens-petrol);
+    --accent-secondary: var(--siemens-bold-green);
+    --border-color: var(--siemens-deep-blue-700);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--background);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+/* Screens */
+.screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Start Screen */
+.game-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--siemens-white);
+    margin-bottom: 8px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.game-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--siemens-bold-green), var(--siemens-interactive-coral));
+    margin: 16px auto 0;
+    border-radius: 2px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+.instructions {
+    background: var(--background-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 28px 35px;
+    margin-bottom: 40px;
+    max-width: 520px;
+}
+
+.instructions h3 {
+    color: var(--siemens-petrol);
+    margin-bottom: 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.instructions ul {
+    list-style: none;
+}
+
+.instructions li {
+    padding: 10px 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    position: relative;
+    padding-left: 24px;
+    line-height: 1.5;
+}
+
+.instructions li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--siemens-petrol);
+    border-radius: 2px;
+}
+
+.key {
+    background: var(--siemens-teal);
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--siemens-white);
+}
+
+.highlight-orange {
+    color: var(--siemens-orange-500);
+    font-weight: 600;
+}
+
+.highlight-green {
+    color: var(--siemens-bold-green);
+    font-weight: 600;
+}
+
+.highlight-purple {
+    color: var(--siemens-interactive-coral);
+    font-weight: 600;
+}
+
+/* Buttons - Siemens Style */
+.game-btn {
+    background: var(--siemens-petrol);
+    color: var(--siemens-white);
+    border: none;
+    padding: 16px 48px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.game-btn:hover {
+    background: var(--siemens-teal);
+    transform: translateY(-2px);
+}
+
+.game-btn:active {
+    transform: translateY(0);
+}
+
+/* Game Screen */
+#game-screen {
+    min-height: auto;
+}
+
+#game-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 16px;
+    padding: 16px 24px;
+    background: var(--background-elevated);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--siemens-bold-green);
+}
+
+#game-canvas {
+    border: 2px solid var(--siemens-teal);
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(0, 153, 153, 0.15);
+}
+
+/* Question Modal - Siemens Style */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 40, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: var(--background-elevated);
+    border: 1px solid var(--siemens-petrol);
+    border-radius: 8px;
+    padding: 40px;
+    max-width: 550px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 60px rgba(0, 153, 153, 0.2);
+    animation: modalAppear 0.25s ease-out;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.question-title {
+    color: var(--siemens-bold-green);
+    font-size: 1.2rem;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+.question-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    color: var(--text-primary);
+    font-weight: 400;
+}
+
+.answers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.answer-btn {
+    background: var(--background-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 16px 24px;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.answer-btn:hover {
+    border-color: var(--siemens-petrol);
+    background: var(--siemens-deep-blue-700);
+}
+
+.answer-btn.correct {
+    border-color: var(--siemens-bold-green);
+    background: rgba(0, 255, 185, 0.1);
+    color: var(--siemens-bold-green);
+}
+
+.answer-btn.incorrect {
+    border-color: var(--siemens-red-500);
+    background: rgba(215, 35, 57, 0.1);
+    color: var(--siemens-red-500);
+}
+
+.answer-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.feedback {
+    margin-top: 24px;
+    padding: 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.feedback.correct {
+    background: rgba(0, 255, 185, 0.1);
+    color: var(--siemens-bold-green);
+    border: 1px solid var(--siemens-bold-green);
+}
+
+.feedback.incorrect {
+    background: rgba(215, 35, 57, 0.1);
+    color: var(--siemens-red-500);
+    border: 1px solid var(--siemens-red-500);
+}
+
+/* Results Screen */
+.results-title {
+    font-size: 2.5rem;
+    color: var(--siemens-white);
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.results-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--siemens-bold-green), var(--siemens-interactive-coral));
+    margin: 16px auto 0;
+    border-radius: 2px;
+}
+
+.gameover-title {
+    font-size: 2.5rem;
+    color: var(--siemens-red-500);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.gameover-subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-size: 1rem;
+}
+
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.result-item {
+    background: var(--background-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--siemens-bold-green);
+}
+
+.grade {
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 4px;
+    margin-bottom: 32px;
+    letter-spacing: 1px;
+}
+
+.grade.excellent {
+    background: var(--siemens-petrol);
+    color: var(--siemens-white);
+}
+
+.grade.good {
+    background: var(--siemens-teal);
+    color: var(--siemens-white);
+}
+
+.grade.average {
+    background: var(--siemens-deep-blue-700);
+    color: var(--siemens-orange-500);
+    border: 1px solid var(--siemens-orange-500);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .game-title {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+    }
+
+    .instructions {
+        padding: 20px;
+    }
+
+    #game-header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .stat {
+        flex: 1;
+        min-width: 70px;
+    }
+
+    .results-container {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 28px 20px;
+    }
+}
