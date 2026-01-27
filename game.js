@@ -210,26 +210,61 @@ let bubbleSpawnTimer = 0;
 let ghostFreezeTimer = 0;
 
 // ==================== DOM ELEMENTS ====================
-const screens = {
-    start: document.getElementById('start-screen'),
-    game: document.getElementById('game-screen'),
-    results: document.getElementById('results-screen'),
-    gameover: document.getElementById('gameover-screen'),
-    questionModal: document.getElementById('question-modal')
+let screens = {};
+
+// ==================== SURVEY STATE ====================
+let surveyState = {
+    questions: [],
+    currentIndex: 0,
+    correctAnswers: 0,
+    totalQuestions: 3
 };
 
 // ==================== INITIALIZATION ====================
 function init() {
+    // Initialize screens after DOM is loaded
+    screens = {
+        start: document.getElementById('start-screen'),
+        game: document.getElementById('game-screen'),
+        results: document.getElementById('results-screen'),
+        gameover: document.getElementById('gameover-screen'),
+        questionModal: document.getElementById('question-modal'),
+        surveyModal: document.getElementById('survey-modal'),
+        surveyResults: document.getElementById('survey-results-screen')
+    };
+    
     canvas = document.getElementById('game-canvas');
-    ctx = canvas.getContext('2d');
+    if (canvas) {
+        ctx = canvas.getContext('2d');
+        canvas.width = CONFIG.mazeWidth * CONFIG.cellSize;
+        canvas.height = CONFIG.mazeHeight * CONFIG.cellSize;
+    }
     
-    canvas.width = CONFIG.mazeWidth * CONFIG.cellSize;
-    canvas.height = CONFIG.mazeHeight * CONFIG.cellSize;
-    
-    // Event listeners
+    // Game event listeners
     document.getElementById('start-btn').addEventListener('click', startGame);
     document.getElementById('play-again-btn').addEventListener('click', startGame);
     document.getElementById('retry-btn').addEventListener('click', startGame);
+    
+    // Survey event listeners
+    const surveyLink = document.getElementById('survey-link');
+    const playGameBtn = document.getElementById('play-game-btn');
+    const backToStartLink = document.getElementById('back-to-start');
+    
+    if (surveyLink) {
+        surveyLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            startSurvey();
+        });
+    }
+    if (playGameBtn) {
+        playGameBtn.addEventListener('click', startGame);
+    }
+    if (backToStartLink) {
+        backToStartLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            backToStart();
+        });
+    }
     
     document.addEventListener('keydown', handleKeyDown);
 }
@@ -955,6 +990,9 @@ function showScreen(screenName) {
         case 'gameover':
             screens.gameover.classList.remove('hidden');
             break;
+        case 'surveyResults':
+            screens.surveyResults.classList.remove('hidden');
+            break;
     }
 }
 
@@ -1023,6 +1061,131 @@ function handleKeyDown(e) {
             e.preventDefault();
             break;
     }
+}
+
+// ==================== SURVEY FUNCTIONS ====================
+function startSurvey() {
+    // Reset survey state
+    surveyState = {
+        questions: [],
+        currentIndex: 0,
+        correctAnswers: 0,
+        totalQuestions: 3
+    };
+    
+    // Select 3 random questions
+    const shuffledQuestions = shuffleArray([...AI_QUESTIONS]);
+    surveyState.questions = shuffledQuestions.slice(0, 3);
+    
+    // Hide start screen and show survey
+    screens.start.classList.add('hidden');
+    showSurveyQuestion();
+}
+
+function showSurveyQuestion() {
+    const question = surveyState.questions[surveyState.currentIndex];
+    
+    // Shuffle answers
+    const answersWithIndex = question.answers.map((answer, i) => ({
+        text: answer,
+        originalIndex: i
+    }));
+    const shuffledAnswers = shuffleArray(answersWithIndex);
+    const newCorrectIndex = shuffledAnswers.findIndex(a => a.originalIndex === question.correct);
+    
+    // Store current question data
+    surveyState.currentQuestion = {
+        question: question.question,
+        answers: shuffledAnswers.map(a => a.text),
+        correct: newCorrectIndex
+    };
+    
+    // Update progress
+    document.getElementById('survey-progress').textContent = 
+        `Question ${surveyState.currentIndex + 1} of ${surveyState.totalQuestions}`;
+    
+    // Display question
+    document.getElementById('survey-question-text').textContent = surveyState.currentQuestion.question;
+    
+    const answersContainer = document.getElementById('survey-answers-container');
+    answersContainer.innerHTML = '';
+    
+    surveyState.currentQuestion.answers.forEach((answer, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.textContent = answer;
+        btn.addEventListener('click', () => selectSurveyAnswer(i));
+        answersContainer.appendChild(btn);
+    });
+    
+    document.getElementById('survey-feedback').classList.add('hidden');
+    screens.surveyModal.classList.remove('hidden');
+}
+
+function selectSurveyAnswer(answerIndex) {
+    const isCorrect = answerIndex === surveyState.currentQuestion.correct;
+    const buttons = document.querySelectorAll('#survey-answers-container .answer-btn');
+    
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === surveyState.currentQuestion.correct) {
+            btn.classList.add('correct');
+        } else if (i === answerIndex && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+    });
+    
+    const feedback = document.getElementById('survey-feedback');
+    feedback.classList.remove('hidden', 'correct', 'incorrect');
+    
+    if (isCorrect) {
+        feedback.classList.add('correct');
+        feedback.textContent = 'Correct!';
+        surveyState.correctAnswers++;
+    } else {
+        feedback.classList.add('incorrect');
+        feedback.textContent = 'Incorrect!';
+    }
+    
+    surveyState.currentIndex++;
+    
+    // Move to next question or show results
+    setTimeout(() => {
+        screens.surveyModal.classList.add('hidden');
+        
+        if (surveyState.currentIndex >= surveyState.totalQuestions) {
+            showSurveyResults();
+        } else {
+            showSurveyQuestion();
+        }
+    }, 1500);
+}
+
+function showSurveyResults() {
+    const percentage = Math.round((surveyState.correctAnswers / surveyState.totalQuestions) * 100);
+    
+    document.getElementById('survey-correct').textContent = 
+        `${surveyState.correctAnswers}/${surveyState.totalQuestions}`;
+    document.getElementById('survey-score').textContent = `${percentage}%`;
+    
+    const gradeEl = document.getElementById('survey-grade');
+    
+    if (percentage >= 67) {
+        gradeEl.textContent = 'AI Expert!';
+        gradeEl.className = 'grade excellent';
+    } else if (percentage >= 34) {
+        gradeEl.textContent = 'AI Enthusiast!';
+        gradeEl.className = 'grade good';
+    } else {
+        gradeEl.textContent = 'Keep Learning!';
+        gradeEl.className = 'grade average';
+    }
+    
+    showScreen('surveyResults');
+}
+
+function backToStart() {
+    showScreen('start');
 }
 
 // ==================== START ====================

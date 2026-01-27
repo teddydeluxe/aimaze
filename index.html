@@ -13,6 +13,10 @@
         <div id="start-screen" class="screen">
             <h1 class="game-title">AI Maze</h1>
             <p class="subtitle">Test Your Artificial Intelligence Knowledge</p>
+            <div class="survey-link-container">
+                <p class="survey-link-text">Don't have time to play?</p>
+                <a href="#" id="survey-link" class="survey-btn">Take the Quick Survey</a>
+            </div>
             <div class="instructions">
                 <h3>How to Play</h3>
                 <ul>
@@ -26,6 +30,36 @@
                 </ul>
             </div>
             <button id="start-btn" class="game-btn">Start Game</button>
+        </div>
+        
+        <!-- Survey Modal -->
+        <div id="survey-modal" class="modal hidden">
+            <div class="modal-content survey-content">
+                <h2 class="question-title">Quick AI Survey</h2>
+                <p class="survey-progress" id="survey-progress">Question 1 of 3</p>
+                <p id="survey-question-text" class="question-text"></p>
+                <div id="survey-answers-container" class="answers-container"></div>
+                <div id="survey-feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+        
+        <!-- Survey Results Screen -->
+        <div id="survey-results-screen" class="screen hidden">
+            <h1 class="results-title">Survey Complete</h1>
+            <p class="survey-thank-you">Thank you for participating!</p>
+            <div class="results-container">
+                <div class="result-item">
+                    <span class="result-label">Questions Correct</span>
+                    <span id="survey-correct" class="result-value">0/3</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Your Score</span>
+                    <span id="survey-score" class="result-value">0%</span>
+                </div>
+            </div>
+            <div id="survey-grade" class="grade"></div>
+            <button id="play-game-btn" class="game-btn">Play the Full Game</button>
+            <p class="survey-link-text"><a href="#" id="back-to-start">Back to Start</a></p>
         </div>
 
         <!-- Game Screen -->

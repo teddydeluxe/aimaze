@@ -100,7 +100,7 @@ body {
 .subtitle {
     font-size: 1.1rem;
     color: var(--text-secondary);
-    margin-bottom: 40px;
+    margin-bottom: 16px;
     font-weight: 400;
 }
 
@@ -443,6 +443,57 @@ body {
     background: var(--siemens-deep-blue-700);
     color: var(--siemens-orange-500);
     border: 1px solid var(--siemens-orange-500);
+}
+
+/* Survey Link Container */
+.survey-link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.survey-link-text {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.survey-btn {
+    color: var(--siemens-petrol);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border: 1px solid var(--siemens-petrol);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.survey-btn:hover {
+    color: var(--siemens-bold-green);
+    border-color: var(--siemens-bold-green);
+    background: rgba(0, 255, 185, 0.05);
+}
+
+/* Survey Modal */
+.survey-content {
+    max-width: 520px;
+}
+
+.survey-progress {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.survey-thank-you {
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    font-size: 1.1rem;
 }
 
 /* Responsive */
