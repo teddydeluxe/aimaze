@@ -1,5 +1,125 @@
 // AI Maze - Pac-Man Style Game with AI Quiz
 
+// ==================== LANGUAGE / TRANSLATIONS ====================
+let currentLanguage = 'en';
+
+const TRANSLATIONS = {
+    en: {
+        // Start Screen
+        subtitle: "Test Your Artificial Intelligence Knowledge",
+        surveyPrompt: "Don't have time to play?",
+        surveyBtn: "Take the Quick Survey",
+        howToPlay: "How to Play",
+        instruction1: 'Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to navigate',
+        instruction2: "Collect the glowing dots to earn points",
+        instruction3: "Question bubbles spawn periodically - collect them!",
+        instruction4: '<span class="highlight-green">Correct answers</span> freeze ghosts and award bonus points',
+        instruction5: '<span class="highlight-purple">Wrong answers</span> spawn additional ghosts',
+        instruction6: "Collect and answer all 3 bubbles to complete the game",
+        instruction7: "Avoid contact with the ghosts",
+        startGame: "Start Game",
+        
+        // Game Screen
+        score: "Score",
+        lives: "Lives",
+        questions: "Questions",
+        nextBubble: "Next Bubble",
+        
+        // Question Modal
+        aiQuestion: "AI Question",
+        quickSurvey: "Quick AI Survey",
+        questionProgress: "Question {current} of {total}",
+        correct: "Correct!",
+        incorrect: "Incorrect!",
+        correctFeedback: "Correct! Ghosts are frozen for 5 seconds! +{points} points",
+        incorrectFeedback: "Wrong! A new ghost has spawned!",
+        ghostsFrozen: "GHOSTS FROZEN - CATCH THEM!",
+        
+        // Survey Results
+        surveyComplete: "Survey Complete",
+        thankYou: "Thank you for participating!",
+        questionsCorrect: "Questions Correct",
+        yourScore: "Your Score",
+        playFullGame: "Play the Full Game",
+        backToStart: "Back to Start",
+        
+        // Game Results
+        gameComplete: "Game Complete",
+        finalScore: "Final Score",
+        quizPoints: "Quiz Points",
+        dotsCollected: "Dots Collected",
+        playAgain: "Play Again",
+        
+        // Game Over
+        gameOver: "Game Over",
+        ghostsCaughtYou: "The ghosts caught you!",
+        questionsAnswered: "Questions Answered",
+        tryAgain: "Try Again",
+        
+        // Grades
+        aiExpert: "AI Expert!",
+        aiEnthusiast: "AI Enthusiast!",
+        keepLearning: "Keep Learning!"
+    },
+    de: {
+        // Start Screen
+        subtitle: "Teste dein Wissen über Künstliche Intelligenz",
+        surveyPrompt: "Keine Zeit zum Spielen?",
+        surveyBtn: "Zur Schnellumfrage",
+        howToPlay: "Spielanleitung",
+        instruction1: 'Benutze <span class="key">Pfeiltasten</span> oder <span class="key">WASD</span> zum Navigieren',
+        instruction2: "Sammle die leuchtenden Punkte für Punkte",
+        instruction3: "Fragenblasen erscheinen regelmäßig - sammle sie!",
+        instruction4: '<span class="highlight-green">Richtige Antworten</span> frieren Geister ein und geben Bonuspunkte',
+        instruction5: '<span class="highlight-purple">Falsche Antworten</span> lassen neue Geister erscheinen',
+        instruction6: "Sammle und beantworte alle 3 Blasen um das Spiel zu beenden",
+        instruction7: "Vermeide Kontakt mit den Geistern",
+        startGame: "Spiel starten",
+        
+        // Game Screen
+        score: "Punkte",
+        lives: "Leben",
+        questions: "Fragen",
+        nextBubble: "Nächste Blase",
+        
+        // Question Modal
+        aiQuestion: "KI-Frage",
+        quickSurvey: "Schnelle KI-Umfrage",
+        questionProgress: "Frage {current} von {total}",
+        correct: "Richtig!",
+        incorrect: "Falsch!",
+        correctFeedback: "Richtig! Geister sind 5 Sekunden eingefroren! +{points} Punkte",
+        incorrectFeedback: "Falsch! Ein neuer Geist ist erschienen!",
+        ghostsFrozen: "GEISTER EINGEFROREN - FANG SIE!",
+        
+        // Survey Results
+        surveyComplete: "Umfrage abgeschlossen",
+        thankYou: "Vielen Dank für deine Teilnahme!",
+        questionsCorrect: "Richtige Antworten",
+        yourScore: "Dein Ergebnis",
+        playFullGame: "Vollständiges Spiel spielen",
+        backToStart: "Zurück zum Start",
+        
+        // Game Results
+        gameComplete: "Spiel abgeschlossen",
+        finalScore: "Endpunktzahl",
+        quizPoints: "Quiz-Punkte",
+        dotsCollected: "Gesammelte Punkte",
+        playAgain: "Nochmal spielen",
+        
+        // Game Over
+        gameOver: "Spiel vorbei",
+        ghostsCaughtYou: "Die Geister haben dich erwischt!",
+        questionsAnswered: "Beantwortete Fragen",
+        tryAgain: "Erneut versuchen",
+        
+        // Grades
+        aiExpert: "KI-Experte!",
+        aiEnthusiast: "KI-Enthusiast!",
+        keepLearning: "Weiter lernen!"
+    }
+};
+
 // ==================== GAME CONFIGURATION ====================
 const CONFIG = {
     cellSize: 28,
@@ -45,143 +165,320 @@ const MAZE_TEMPLATE = [
 ];
 
 // ==================== AI QUESTIONS ====================
-const AI_QUESTIONS = [
-    {
-        question: "What does AI stand for?",
-        answers: ["Artificial Intelligence", "Automated Integration", "Advanced Internet", "Applied Informatics"],
-        correct: 0
-    },
-    {
-        question: "Which company developed ChatGPT?",
-        answers: ["Google", "Microsoft", "OpenAI", "Meta"],
-        correct: 2
-    },
-    {
-        question: "What is machine learning?",
-        answers: [
-            "Programming explicit rules for every scenario",
-            "Systems that learn from data to improve performance",
-            "Robots that physically learn to move",
-            "Computers that replace human workers"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is a neural network inspired by?",
-        answers: ["Computer circuits", "The human brain", "Spider webs", "Social networks"],
-        correct: 1
-    },
-    {
-        question: "What is 'training' in machine learning?",
-        answers: [
-            "Teaching robots physical exercises",
-            "The process of a model learning from data",
-            "Human operators learning to use AI",
-            "Installing software updates"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is a 'Large Language Model' (LLM)?",
-        answers: [
-            "A very big dictionary",
-            "An AI trained on vast text data to understand and generate language",
-            "A programming language for large companies",
-            "A type of computer memory"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is 'deep learning'?",
-        answers: [
-            "Learning while sleeping",
-            "Neural networks with many layers",
-            "Studying AI for many years",
-            "Underground data centers"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is a 'prompt' in AI?",
-        answers: [
-            "A reminder notification",
-            "The input text given to an AI model",
-            "A type of AI error",
-            "The AI's response"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is 'computer vision'?",
-        answers: [
-            "A computer screen",
-            "AI that can interpret and understand images",
-            "Virtual reality glasses",
-            "High-resolution displays"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is the 'Turing Test'?",
-        answers: [
-            "A programming certification",
-            "A test to see if AI can exhibit human-like intelligence",
-            "A security vulnerability scan",
-            "A speed benchmark for computers"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is 'natural language processing' (NLP)?",
-        answers: [
-            "Speaking naturally to computers",
-            "AI understanding and generating human language",
-            "A type of keyboard",
-            "Voice recording technology"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is 'reinforcement learning'?",
-        answers: [
-            "Learning by repetition only",
-            "Learning through rewards and penalties",
-            "Strengthening computer hardware",
-            "Backup learning systems"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is an AI 'hallucination'?",
-        answers: [
-            "AI having dreams",
-            "AI generating false or made-up information confidently",
-            "Visual glitches on screen",
-            "AI refusing to answer"
-        ],
-        correct: 1
-    },
-    {
-        question: "What is 'generative AI'?",
-        answers: [
-            "AI that generates electricity",
-            "AI that creates new content like text, images, or music",
-            "The next generation of computers",
-            "AI that only analyzes data"
-        ],
-        correct: 1
-    },
-    {
-        question: "What does GPU stand for in AI context?",
-        answers: [
-            "General Purpose Unit",
-            "Graphics Processing Unit",
-            "Gigabyte Power Usage",
-            "Global Processing Utility"
-        ],
-        correct: 1
+const AI_QUESTIONS = {
+    en: [
+        {
+            question: "What does AI stand for?",
+            answers: ["Artificial Intelligence", "Automated Integration", "Advanced Internet", "Applied Informatics"],
+            correct: 0
+        },
+        {
+            question: "Which company developed ChatGPT?",
+            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            correct: 2
+        },
+        {
+            question: "What is machine learning?",
+            answers: [
+                "Programming explicit rules for every scenario",
+                "Systems that learn from data to improve performance",
+                "Robots that physically learn to move",
+                "Computers that replace human workers"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is a neural network inspired by?",
+            answers: ["Computer circuits", "The human brain", "Spider webs", "Social networks"],
+            correct: 1
+        },
+        {
+            question: "What is 'training' in machine learning?",
+            answers: [
+                "Teaching robots physical exercises",
+                "The process of a model learning from data",
+                "Human operators learning to use AI",
+                "Installing software updates"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is a 'Large Language Model' (LLM)?",
+            answers: [
+                "A very big dictionary",
+                "An AI trained on vast text data to understand and generate language",
+                "A programming language for large companies",
+                "A type of computer memory"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is 'deep learning'?",
+            answers: [
+                "Learning while sleeping",
+                "Neural networks with many layers",
+                "Studying AI for many years",
+                "Underground data centers"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is a 'prompt' in AI?",
+            answers: [
+                "A reminder notification",
+                "The input text given to an AI model",
+                "A type of AI error",
+                "The AI's response"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is 'computer vision'?",
+            answers: [
+                "A computer screen",
+                "AI that can interpret and understand images",
+                "Virtual reality glasses",
+                "High-resolution displays"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is the 'Turing Test'?",
+            answers: [
+                "A programming certification",
+                "A test to see if AI can exhibit human-like intelligence",
+                "A security vulnerability scan",
+                "A speed benchmark for computers"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is 'natural language processing' (NLP)?",
+            answers: [
+                "Speaking naturally to computers",
+                "AI understanding and generating human language",
+                "A type of keyboard",
+                "Voice recording technology"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is 'reinforcement learning'?",
+            answers: [
+                "Learning by repetition only",
+                "Learning through rewards and penalties",
+                "Strengthening computer hardware",
+                "Backup learning systems"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is an AI 'hallucination'?",
+            answers: [
+                "AI having dreams",
+                "AI generating false or made-up information confidently",
+                "Visual glitches on screen",
+                "AI refusing to answer"
+            ],
+            correct: 1
+        },
+        {
+            question: "What is 'generative AI'?",
+            answers: [
+                "AI that generates electricity",
+                "AI that creates new content like text, images, or music",
+                "The next generation of computers",
+                "AI that only analyzes data"
+            ],
+            correct: 1
+        },
+        {
+            question: "What does GPU stand for in AI context?",
+            answers: [
+                "General Purpose Unit",
+                "Graphics Processing Unit",
+                "Gigabyte Power Usage",
+                "Global Processing Utility"
+            ],
+            correct: 1
+        }
+    ],
+    de: [
+        {
+            question: "Wofür steht KI?",
+            answers: ["Künstliche Intelligenz", "Kontrollierte Integration", "Komplexe Informatik", "Kalkulierte Information"],
+            correct: 0
+        },
+        {
+            question: "Welches Unternehmen hat ChatGPT entwickelt?",
+            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            correct: 2
+        },
+        {
+            question: "Was ist maschinelles Lernen?",
+            answers: [
+                "Programmierung expliziter Regeln für jedes Szenario",
+                "Systeme, die aus Daten lernen um sich zu verbessern",
+                "Roboter, die physisch lernen sich zu bewegen",
+                "Computer, die menschliche Arbeiter ersetzen"
+            ],
+            correct: 1
+        },
+        {
+            question: "Wovon ist ein neuronales Netzwerk inspiriert?",
+            answers: ["Computerschaltkreisen", "Dem menschlichen Gehirn", "Spinnennetzen", "Sozialen Netzwerken"],
+            correct: 1
+        },
+        {
+            question: "Was ist 'Training' beim maschinellen Lernen?",
+            answers: [
+                "Robotern körperliche Übungen beibringen",
+                "Der Prozess, bei dem ein Modell aus Daten lernt",
+                "Menschen lernen KI zu bedienen",
+                "Software-Updates installieren"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist ein 'Large Language Model' (LLM)?",
+            answers: [
+                "Ein sehr großes Wörterbuch",
+                "Eine KI, die auf großen Textmengen trainiert wurde um Sprache zu verstehen",
+                "Eine Programmiersprache für große Unternehmen",
+                "Eine Art Computerspeicher"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist 'Deep Learning'?",
+            answers: [
+                "Lernen im Schlaf",
+                "Neuronale Netzwerke mit vielen Schichten",
+                "Jahrelanges KI-Studium",
+                "Unterirdische Rechenzentren"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist ein 'Prompt' in der KI?",
+            answers: [
+                "Eine Erinnerungsbenachrichtigung",
+                "Der Eingabetext für ein KI-Modell",
+                "Eine Art KI-Fehler",
+                "Die Antwort der KI"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist 'Computer Vision'?",
+            answers: [
+                "Ein Computerbildschirm",
+                "KI, die Bilder interpretieren und verstehen kann",
+                "Virtual-Reality-Brillen",
+                "Hochauflösende Displays"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist der 'Turing-Test'?",
+            answers: [
+                "Eine Programmierzertifizierung",
+                "Ein Test, ob KI menschenähnliche Intelligenz zeigen kann",
+                "Ein Sicherheits-Schwachstellenscan",
+                "Ein Geschwindigkeitsbenchmark für Computer"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist 'Natural Language Processing' (NLP)?",
+            answers: [
+                "Natürlich mit Computern sprechen",
+                "KI, die menschliche Sprache versteht und erzeugt",
+                "Eine Art Tastatur",
+                "Sprachaufnahmetechnologie"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist 'Reinforcement Learning'?",
+            answers: [
+                "Lernen nur durch Wiederholung",
+                "Lernen durch Belohnungen und Bestrafungen",
+                "Verstärkung von Computer-Hardware",
+                "Backup-Lernsysteme"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist eine KI-'Halluzination'?",
+            answers: [
+                "KI, die träumt",
+                "KI, die selbstbewusst falsche Informationen erzeugt",
+                "Visuelle Bildschirmfehler",
+                "KI, die nicht antwortet"
+            ],
+            correct: 1
+        },
+        {
+            question: "Was ist 'generative KI'?",
+            answers: [
+                "KI, die Strom erzeugt",
+                "KI, die neue Inhalte wie Text, Bilder oder Musik erstellt",
+                "Die nächste Computergeneration",
+                "KI, die nur Daten analysiert"
+            ],
+            correct: 1
+        },
+        {
+            question: "Wofür steht GPU im KI-Kontext?",
+            answers: [
+                "General Purpose Unit",
+                "Graphics Processing Unit",
+                "Gigabyte Power Usage",
+                "Global Processing Utility"
+            ],
+            correct: 1
+        }
+    ]
+};
+
+// Helper to get questions for current language
+function getQuestions() {
+    return AI_QUESTIONS[currentLanguage];
+}
+
+// ==================== TRANSLATION FUNCTIONS ====================
+function t(key, replacements = {}) {
+    let text = TRANSLATIONS[currentLanguage][key] || TRANSLATIONS['en'][key] || key;
+    
+    // Replace placeholders like {current}, {total}, {points}
+    for (const [placeholder, value] of Object.entries(replacements)) {
+        text = text.replace(`{${placeholder}}`, value);
     }
-];
+    
+    return text;
+}
+
+function applyTranslations() {
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const translation = t(key);
+        element.innerHTML = translation;
+    });
+    
+    // Update language button states
+    document.getElementById('lang-en').classList.toggle('active', currentLanguage === 'en');
+    document.getElementById('lang-de').classList.toggle('active', currentLanguage === 'de');
+}
+
+function setLanguage(lang) {
+    currentLanguage = lang;
+    applyTranslations();
+    
+    // Store preference
+    localStorage.setItem('aimaze-language', lang);
+}
 
 // ==================== GAME STATE ====================
 let canvas, ctx;
@@ -265,6 +562,15 @@ function init() {
             backToStart();
         });
     }
+    
+    // Language event listeners
+    document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+    document.getElementById('lang-de').addEventListener('click', () => setLanguage('de'));
+    
+    // Load saved language preference or default to English
+    const savedLang = localStorage.getItem('aimaze-language') || 'en';
+    currentLanguage = savedLang;
+    applyTranslations();
     
     document.addEventListener('keydown', handleKeyDown);
 }
@@ -668,8 +974,10 @@ function shuffleArray(array) {
 function showQuestion() {
     gameState.gamePaused = true;
     
+    const questions = getQuestions();
+    
     // Get unused question indices and shuffle them
-    const availableIndices = AI_QUESTIONS
+    const availableIndices = questions
         .map((_, i) => i)
         .filter(i => !gameState.usedQuestions.includes(i));
     
@@ -683,7 +991,7 @@ function showQuestion() {
     const questionIndex = shuffledIndices[0];
     gameState.usedQuestions.push(questionIndex);
     
-    const originalQuestion = AI_QUESTIONS[questionIndex];
+    const originalQuestion = questions[questionIndex];
     
     // Create shuffled answers with original index tracking
     const answersWithIndex = originalQuestion.answers.map((answer, i) => ({
@@ -737,7 +1045,7 @@ function selectAnswer(answerIndex) {
     
     if (isCorrect) {
         feedback.classList.add('correct');
-        feedback.textContent = '✓ Correct! Ghosts are frozen for 5 seconds! +' + CONFIG.pointsPerQuestion + ' points';
+        feedback.textContent = '✓ ' + t('correctFeedback', { points: CONFIG.pointsPerQuestion });
         gameState.score += CONFIG.pointsPerQuestion;
         gameState.quizPoints += CONFIG.pointsPerQuestion;
         gameState.correctAnswers++;
@@ -745,7 +1053,7 @@ function selectAnswer(answerIndex) {
         ghostFreezeTimer = CONFIG.ghostFreezeTime;
     } else {
         feedback.classList.add('incorrect');
-        feedback.textContent = '✗ Wrong! A new ghost has spawned!';
+        feedback.textContent = '✗ ' + t('incorrectFeedback');
         spawnGhost();
     }
     
@@ -941,7 +1249,7 @@ function render() {
         ctx.fillStyle = COLORS.dot;
         ctx.font = 'bold 14px Segoe UI, Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('GHOSTS FROZEN - CATCH THEM!', canvas.width / 2, 26);
+        ctx.fillText(t('ghostsFrozen'), canvas.width / 2, 26);
     }
     
     // Draw floating texts (bonus points)
@@ -1009,13 +1317,13 @@ function showResults() {
     const gradeEl = document.getElementById('grade');
     
     if (percentage >= 80) {
-        gradeEl.textContent = '🏆 AI Expert!';
+        gradeEl.textContent = '🏆 ' + t('aiExpert');
         gradeEl.className = 'grade excellent';
     } else if (percentage >= 50) {
-        gradeEl.textContent = '⭐ AI Enthusiast!';
+        gradeEl.textContent = '⭐ ' + t('aiEnthusiast');
         gradeEl.className = 'grade good';
     } else {
-        gradeEl.textContent = '📚 Keep Learning!';
+        gradeEl.textContent = '📚 ' + t('keepLearning');
         gradeEl.className = 'grade average';
     }
     
@@ -1073,8 +1381,8 @@ function startSurvey() {
         totalQuestions: 3
     };
     
-    // Select 3 random questions
-    const shuffledQuestions = shuffleArray([...AI_QUESTIONS]);
+    // Select 3 random questions from current language
+    const shuffledQuestions = shuffleArray([...getQuestions()]);
     surveyState.questions = shuffledQuestions.slice(0, 3);
     
     // Hide start screen and show survey
@@ -1102,7 +1410,7 @@ function showSurveyQuestion() {
     
     // Update progress
     document.getElementById('survey-progress').textContent = 
-        `Question ${surveyState.currentIndex + 1} of ${surveyState.totalQuestions}`;
+        t('questionProgress', { current: surveyState.currentIndex + 1, total: surveyState.totalQuestions });
     
     // Display question
     document.getElementById('survey-question-text').textContent = surveyState.currentQuestion.question;
@@ -1140,11 +1448,11 @@ function selectSurveyAnswer(answerIndex) {
     
     if (isCorrect) {
         feedback.classList.add('correct');
-        feedback.textContent = 'Correct!';
+        feedback.textContent = t('correct');
         surveyState.correctAnswers++;
     } else {
         feedback.classList.add('incorrect');
-        feedback.textContent = 'Incorrect!';
+        feedback.textContent = t('incorrect');
     }
     
     surveyState.currentIndex++;
@@ -1171,13 +1479,13 @@ function showSurveyResults() {
     const gradeEl = document.getElementById('survey-grade');
     
     if (percentage >= 67) {
-        gradeEl.textContent = 'AI Expert!';
+        gradeEl.textContent = t('aiExpert');
         gradeEl.className = 'grade excellent';
     } else if (percentage >= 34) {
-        gradeEl.textContent = 'AI Enthusiast!';
+        gradeEl.textContent = t('aiEnthusiast');
         gradeEl.className = 'grade good';
     } else {
-        gradeEl.textContent = 'Keep Learning!';
+        gradeEl.textContent = t('keepLearning');
         gradeEl.className = 'grade average';
     }
     

@@ -97,6 +97,38 @@ body {
     border-radius: 2px;
 }
 
+/* Language Selector */
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+}
+
+.lang-btn:hover {
+    color: var(--siemens-petrol);
+}
+
+.lang-btn.active {
+    color: var(--siemens-bold-green);
+    font-weight: 600;
+}
+
+.lang-divider {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
 .subtitle {
     font-size: 1.1rem;
     color: var(--text-secondary);

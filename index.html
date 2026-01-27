@@ -12,31 +12,36 @@
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
             <h1 class="game-title">AI Maze</h1>
-            <p class="subtitle">Test Your Artificial Intelligence Knowledge</p>
+            <div class="language-selector">
+                <button id="lang-de" class="lang-btn">Deutsch</button>
+                <span class="lang-divider">|</span>
+                <button id="lang-en" class="lang-btn active">English</button>
+            </div>
+            <p class="subtitle" data-i18n="subtitle">Test Your Artificial Intelligence Knowledge</p>
             <div class="survey-link-container">
-                <p class="survey-link-text">Don't have time to play?</p>
-                <a href="#" id="survey-link" class="survey-btn">Take the Quick Survey</a>
+                <p class="survey-link-text" data-i18n="surveyPrompt">Don't have time to play?</p>
+                <a href="#" id="survey-link" class="survey-btn" data-i18n="surveyBtn">Take the Quick Survey</a>
             </div>
             <div class="instructions">
-                <h3>How to Play</h3>
+                <h3 data-i18n="howToPlay">How to Play</h3>
                 <ul>
-                    <li>Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to navigate</li>
-                    <li>Collect the glowing dots to earn points</li>
-                    <li>Question bubbles spawn periodically - collect them!</li>
-                    <li><span class="highlight-green">Correct answers</span> freeze ghosts and award bonus points</li>
-                    <li><span class="highlight-purple">Wrong answers</span> spawn additional ghosts</li>
-                    <li>Collect and answer all 3 bubbles to complete the game</li>
-                    <li>Avoid contact with the ghosts</li>
+                    <li data-i18n="instruction1">Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to navigate</li>
+                    <li data-i18n="instruction2">Collect the glowing dots to earn points</li>
+                    <li data-i18n="instruction3">Question bubbles spawn periodically - collect them!</li>
+                    <li data-i18n="instruction4"><span class="highlight-green">Correct answers</span> freeze ghosts and award bonus points</li>
+                    <li data-i18n="instruction5"><span class="highlight-purple">Wrong answers</span> spawn additional ghosts</li>
+                    <li data-i18n="instruction6">Collect and answer all 3 bubbles to complete the game</li>
+                    <li data-i18n="instruction7">Avoid contact with the ghosts</li>
                 </ul>
             </div>
-            <button id="start-btn" class="game-btn">Start Game</button>
+            <button id="start-btn" class="game-btn" data-i18n="startGame">Start Game</button>
         </div>
         
         <!-- Survey Modal -->
         <div id="survey-modal" class="modal hidden">
             <div class="modal-content survey-content">
-                <h2 class="question-title">Quick AI Survey</h2>
-                <p class="survey-progress" id="survey-progress">Question 1 of 3</p>
+                <h2 class="question-title" data-i18n="quickSurvey">Quick AI Survey</h2>
+                <p class="survey-progress" id="survey-progress" data-i18n="questionProgress">Question 1 of 3</p>
                 <p id="survey-question-text" class="question-text"></p>
                 <div id="survey-answers-container" class="answers-container"></div>
                 <div id="survey-feedback" class="feedback hidden"></div>
@@ -45,40 +50,40 @@
         
         <!-- Survey Results Screen -->
         <div id="survey-results-screen" class="screen hidden">
-            <h1 class="results-title">Survey Complete</h1>
-            <p class="survey-thank-you">Thank you for participating!</p>
+            <h1 class="results-title" data-i18n="surveyComplete">Survey Complete</h1>
+            <p class="survey-thank-you" data-i18n="thankYou">Thank you for participating!</p>
             <div class="results-container">
                 <div class="result-item">
-                    <span class="result-label">Questions Correct</span>
+                    <span class="result-label" data-i18n="questionsCorrect">Questions Correct</span>
                     <span id="survey-correct" class="result-value">0/3</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">Your Score</span>
+                    <span class="result-label" data-i18n="yourScore">Your Score</span>
                     <span id="survey-score" class="result-value">0%</span>
                 </div>
             </div>
             <div id="survey-grade" class="grade"></div>
-            <button id="play-game-btn" class="game-btn">Play the Full Game</button>
-            <p class="survey-link-text"><a href="#" id="back-to-start">Back to Start</a></p>
+            <button id="play-game-btn" class="game-btn" data-i18n="playFullGame">Play the Full Game</button>
+            <p class="survey-link-text"><a href="#" id="back-to-start" data-i18n="backToStart">Back to Start</a></p>
         </div>
 
         <!-- Game Screen -->
         <div id="game-screen" class="screen hidden">
             <div id="game-header">
                 <div class="stat">
-                    <span class="stat-label">Score</span>
+                    <span class="stat-label" data-i18n="score">Score</span>
                     <span id="score" class="stat-value">0</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Lives</span>
+                    <span class="stat-label" data-i18n="lives">Lives</span>
                     <span id="lives" class="stat-value">&#10084;&#10084;&#10084;</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Questions</span>
+                    <span class="stat-label" data-i18n="questions">Questions</span>
                     <span id="questions-count" class="stat-value">0/3</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-label">Next Bubble</span>
+                    <span class="stat-label" data-i18n="nextBubble">Next Bubble</span>
                     <span id="bubble-timer" class="stat-value">3s</span>
                 </div>
             </div>
@@ -88,7 +93,7 @@
         <!-- Question Modal -->
         <div id="question-modal" class="modal hidden">
             <div class="modal-content">
-                <h2 class="question-title">AI Question</h2>
+                <h2 class="question-title" data-i18n="aiQuestion">AI Question</h2>
                 <p id="question-text" class="question-text"></p>
                 <div id="answers-container" class="answers-container"></div>
                 <div id="feedback" class="feedback hidden"></div>
@@ -97,44 +102,44 @@
 
         <!-- Results Screen -->
         <div id="results-screen" class="screen hidden">
-            <h1 class="results-title">Game Complete</h1>
+            <h1 class="results-title" data-i18n="gameComplete">Game Complete</h1>
             <div class="results-container">
                 <div class="result-item">
-                    <span class="result-label">Final Score</span>
+                    <span class="result-label" data-i18n="finalScore">Final Score</span>
                     <span id="final-score" class="result-value">0</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">Questions Correct</span>
+                    <span class="result-label" data-i18n="questionsCorrect">Questions Correct</span>
                     <span id="correct-answers" class="result-value">0/3</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">Quiz Points</span>
+                    <span class="result-label" data-i18n="quizPoints">Quiz Points</span>
                     <span id="quiz-points" class="result-value">0</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">Dots Collected</span>
+                    <span class="result-label" data-i18n="dotsCollected">Dots Collected</span>
                     <span id="dots-collected" class="result-value">0</span>
                 </div>
             </div>
             <div id="grade" class="grade"></div>
-            <button id="play-again-btn" class="game-btn">Play Again</button>
+            <button id="play-again-btn" class="game-btn" data-i18n="playAgain">Play Again</button>
         </div>
 
         <!-- Game Over Screen -->
         <div id="gameover-screen" class="screen hidden">
-            <h1 class="gameover-title">Game Over</h1>
-            <p class="gameover-subtitle">The ghosts caught you!</p>
+            <h1 class="gameover-title" data-i18n="gameOver">Game Over</h1>
+            <p class="gameover-subtitle" data-i18n="ghostsCaughtYou">The ghosts caught you!</p>
             <div class="results-container">
                 <div class="result-item">
-                    <span class="result-label">Final Score</span>
+                    <span class="result-label" data-i18n="finalScore">Final Score</span>
                     <span id="gameover-score" class="result-value">0</span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">Questions Answered</span>
+                    <span class="result-label" data-i18n="questionsAnswered">Questions Answered</span>
                     <span id="gameover-questions" class="result-value">0/3</span>
                 </div>
             </div>
-            <button id="retry-btn" class="game-btn">Try Again</button>
+            <button id="retry-btn" class="game-btn" data-i18n="tryAgain">Try Again</button>
         </div>
     </div>
 
