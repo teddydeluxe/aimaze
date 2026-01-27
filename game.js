@@ -117,6 +117,120 @@ const TRANSLATIONS = {
         aiExpert: "KI-Experte!",
         aiEnthusiast: "KI-Enthusiast!",
         keepLearning: "Weiter lernen!"
+    },
+    fr: {
+        // Start Screen
+        subtitle: "Testez vos connaissances en Intelligence Artificielle",
+        surveyPrompt: "Pas le temps de jouer ?",
+        surveyBtn: "Répondre au sondage rapide",
+        howToPlay: "Comment jouer",
+        instruction1: 'Utilisez les <span class="key">Flèches</span> ou <span class="key">WASD</span> pour naviguer',
+        instruction2: "Collectez les points lumineux pour gagner des points",
+        instruction3: "Des bulles de questions apparaissent régulièrement - collectez-les !",
+        instruction4: '<span class="highlight-green">Les bonnes réponses</span> gèlent les fantômes et donnent des points bonus',
+        instruction5: '<span class="highlight-purple">Les mauvaises réponses</span> font apparaître de nouveaux fantômes',
+        instruction6: "Collectez et répondez aux 3 bulles pour terminer le jeu",
+        instruction7: "Évitez le contact avec les fantômes",
+        startGame: "Commencer le jeu",
+        
+        // Game Screen
+        score: "Score",
+        lives: "Vies",
+        questions: "Questions",
+        nextBubble: "Prochaine bulle",
+        
+        // Question Modal
+        aiQuestion: "Question IA",
+        quickSurvey: "Sondage rapide IA",
+        questionProgress: "Question {current} sur {total}",
+        correct: "Correct !",
+        incorrect: "Incorrect !",
+        correctFeedback: "Correct ! Les fantômes sont gelés pendant 5 secondes ! +{points} points",
+        incorrectFeedback: "Faux ! Un nouveau fantôme est apparu !",
+        ghostsFrozen: "FANTÔMES GELÉS - ATTRAPEZ-LES !",
+        
+        // Survey Results
+        surveyComplete: "Sondage terminé",
+        thankYou: "Merci pour votre participation !",
+        questionsCorrect: "Réponses correctes",
+        yourScore: "Votre score",
+        playFullGame: "Jouer au jeu complet",
+        backToStart: "Retour au début",
+        
+        // Game Results
+        gameComplete: "Jeu terminé",
+        finalScore: "Score final",
+        quizPoints: "Points du quiz",
+        dotsCollected: "Points collectés",
+        playAgain: "Rejouer",
+        
+        // Game Over
+        gameOver: "Fin de partie",
+        ghostsCaughtYou: "Les fantômes vous ont attrapé !",
+        questionsAnswered: "Questions répondues",
+        tryAgain: "Réessayer",
+        
+        // Grades
+        aiExpert: "Expert en IA !",
+        aiEnthusiast: "Passionné d'IA !",
+        keepLearning: "Continuez à apprendre !"
+    },
+    es: {
+        // Start Screen
+        subtitle: "Pon a prueba tus conocimientos de Inteligencia Artificial",
+        surveyPrompt: "¿No tienes tiempo para jugar?",
+        surveyBtn: "Responder encuesta rápida",
+        howToPlay: "Cómo jugar",
+        instruction1: 'Usa las <span class="key">Flechas</span> o <span class="key">WASD</span> para navegar',
+        instruction2: "Recoge los puntos brillantes para ganar puntos",
+        instruction3: "Las burbujas de preguntas aparecen periódicamente - ¡recógelas!",
+        instruction4: '<span class="highlight-green">Las respuestas correctas</span> congelan a los fantasmas y dan puntos extra',
+        instruction5: '<span class="highlight-purple">Las respuestas incorrectas</span> hacen aparecer nuevos fantasmas',
+        instruction6: "Recoge y responde las 3 burbujas para completar el juego",
+        instruction7: "Evita el contacto con los fantasmas",
+        startGame: "Iniciar juego",
+        
+        // Game Screen
+        score: "Puntuación",
+        lives: "Vidas",
+        questions: "Preguntas",
+        nextBubble: "Próxima burbuja",
+        
+        // Question Modal
+        aiQuestion: "Pregunta de IA",
+        quickSurvey: "Encuesta rápida de IA",
+        questionProgress: "Pregunta {current} de {total}",
+        correct: "¡Correcto!",
+        incorrect: "¡Incorrecto!",
+        correctFeedback: "¡Correcto! ¡Los fantasmas están congelados por 5 segundos! +{points} puntos",
+        incorrectFeedback: "¡Error! ¡Un nuevo fantasma ha aparecido!",
+        ghostsFrozen: "FANTASMAS CONGELADOS - ¡ATRÁPALOS!",
+        
+        // Survey Results
+        surveyComplete: "Encuesta completada",
+        thankYou: "¡Gracias por participar!",
+        questionsCorrect: "Respuestas correctas",
+        yourScore: "Tu puntuación",
+        playFullGame: "Jugar el juego completo",
+        backToStart: "Volver al inicio",
+        
+        // Game Results
+        gameComplete: "Juego completado",
+        finalScore: "Puntuación final",
+        quizPoints: "Puntos del quiz",
+        dotsCollected: "Puntos recogidos",
+        playAgain: "Jugar de nuevo",
+        
+        // Game Over
+        gameOver: "Fin del juego",
+        ghostsCaughtYou: "¡Los fantasmas te atraparon!",
+        questionsAnswered: "Preguntas respondidas",
+        tryAgain: "Intentar de nuevo",
+        
+        // Grades
+        aiExpert: "¡Experto en IA!",
+        aiEnthusiast: "¡Entusiasta de IA!",
+        keepLearning: "¡Sigue aprendiendo!"
     }
 };
 
@@ -439,6 +553,280 @@ const AI_QUESTIONS = {
             ],
             correct: 1
         }
+    ],
+    fr: [
+        {
+            question: "Que signifie IA ?",
+            answers: ["Intelligence Artificielle", "Intégration Automatisée", "Internet Avancé", "Informatique Appliquée"],
+            correct: 0
+        },
+        {
+            question: "Quelle entreprise a développé ChatGPT ?",
+            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            correct: 2
+        },
+        {
+            question: "Qu'est-ce que l'apprentissage automatique ?",
+            answers: [
+                "Programmer des règles explicites pour chaque scénario",
+                "Des systèmes qui apprennent des données pour améliorer leurs performances",
+                "Des robots qui apprennent physiquement à se déplacer",
+                "Des ordinateurs qui remplacent les travailleurs humains"
+            ],
+            correct: 1
+        },
+        {
+            question: "De quoi s'inspire un réseau de neurones ?",
+            answers: ["Des circuits informatiques", "Du cerveau humain", "Des toiles d'araignée", "Des réseaux sociaux"],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que l'entraînement en apprentissage automatique ?",
+            answers: [
+                "Enseigner des exercices physiques aux robots",
+                "Le processus par lequel un modèle apprend des données",
+                "Les opérateurs humains apprenant à utiliser l'IA",
+                "L'installation de mises à jour logicielles"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce qu'un 'Grand Modèle de Langage' (LLM) ?",
+            answers: [
+                "Un très gros dictionnaire",
+                "Une IA entraînée sur de vastes données textuelles pour comprendre et générer du langage",
+                "Un langage de programmation pour grandes entreprises",
+                "Un type de mémoire informatique"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que le 'deep learning' ?",
+            answers: [
+                "Apprendre en dormant",
+                "Des réseaux de neurones avec de nombreuses couches",
+                "Étudier l'IA pendant de nombreuses années",
+                "Des centres de données souterrains"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce qu'un 'prompt' en IA ?",
+            answers: [
+                "Une notification de rappel",
+                "Le texte d'entrée donné à un modèle d'IA",
+                "Un type d'erreur IA",
+                "La réponse de l'IA"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que la 'vision par ordinateur' ?",
+            answers: [
+                "Un écran d'ordinateur",
+                "L'IA capable d'interpréter et comprendre les images",
+                "Des lunettes de réalité virtuelle",
+                "Des écrans haute résolution"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que le 'Test de Turing' ?",
+            answers: [
+                "Une certification en programmation",
+                "Un test pour voir si l'IA peut exhiber une intelligence semblable à l'humain",
+                "Un scan de vulnérabilité de sécurité",
+                "Un benchmark de vitesse pour ordinateurs"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que le 'traitement du langage naturel' (NLP) ?",
+            answers: [
+                "Parler naturellement aux ordinateurs",
+                "L'IA comprenant et générant le langage humain",
+                "Un type de clavier",
+                "Une technologie d'enregistrement vocal"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que l'apprentissage par renforcement ?",
+            answers: [
+                "Apprendre uniquement par répétition",
+                "Apprendre par récompenses et pénalités",
+                "Renforcer le matériel informatique",
+                "Des systèmes d'apprentissage de secours"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce qu'une 'hallucination' IA ?",
+            answers: [
+                "L'IA qui rêve",
+                "L'IA générant des informations fausses ou inventées avec assurance",
+                "Des glitches visuels à l'écran",
+                "L'IA refusant de répondre"
+            ],
+            correct: 1
+        },
+        {
+            question: "Qu'est-ce que l'IA générative ?",
+            answers: [
+                "L'IA qui génère de l'électricité",
+                "L'IA qui crée du nouveau contenu comme du texte, des images ou de la musique",
+                "La prochaine génération d'ordinateurs",
+                "L'IA qui analyse uniquement les données"
+            ],
+            correct: 1
+        },
+        {
+            question: "Que signifie GPU dans le contexte de l'IA ?",
+            answers: [
+                "General Purpose Unit",
+                "Graphics Processing Unit",
+                "Gigabyte Power Usage",
+                "Global Processing Utility"
+            ],
+            correct: 1
+        }
+    ],
+    es: [
+        {
+            question: "¿Qué significa IA?",
+            answers: ["Inteligencia Artificial", "Integración Automatizada", "Internet Avanzado", "Informática Aplicada"],
+            correct: 0
+        },
+        {
+            question: "¿Qué empresa desarrolló ChatGPT?",
+            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            correct: 2
+        },
+        {
+            question: "¿Qué es el aprendizaje automático?",
+            answers: [
+                "Programar reglas explícitas para cada escenario",
+                "Sistemas que aprenden de los datos para mejorar su rendimiento",
+                "Robots que aprenden físicamente a moverse",
+                "Computadoras que reemplazan a los trabajadores humanos"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿En qué se inspira una red neuronal?",
+            answers: ["Circuitos de computadora", "El cerebro humano", "Telarañas", "Redes sociales"],
+            correct: 1
+        },
+        {
+            question: "¿Qué es el 'entrenamiento' en aprendizaje automático?",
+            answers: [
+                "Enseñar ejercicios físicos a robots",
+                "El proceso mediante el cual un modelo aprende de los datos",
+                "Operadores humanos aprendiendo a usar IA",
+                "Instalar actualizaciones de software"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es un 'Modelo de Lenguaje Grande' (LLM)?",
+            answers: [
+                "Un diccionario muy grande",
+                "Una IA entrenada con grandes cantidades de texto para entender y generar lenguaje",
+                "Un lenguaje de programación para grandes empresas",
+                "Un tipo de memoria de computadora"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es el 'deep learning'?",
+            answers: [
+                "Aprender mientras duermes",
+                "Redes neuronales con muchas capas",
+                "Estudiar IA durante muchos años",
+                "Centros de datos subterráneos"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es un 'prompt' en IA?",
+            answers: [
+                "Una notificación de recordatorio",
+                "El texto de entrada dado a un modelo de IA",
+                "Un tipo de error de IA",
+                "La respuesta de la IA"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es la 'visión por computadora'?",
+            answers: [
+                "Una pantalla de computadora",
+                "IA que puede interpretar y entender imágenes",
+                "Gafas de realidad virtual",
+                "Pantallas de alta resolución"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es el 'Test de Turing'?",
+            answers: [
+                "Una certificación de programación",
+                "Una prueba para ver si la IA puede exhibir inteligencia similar a la humana",
+                "Un escaneo de vulnerabilidades de seguridad",
+                "Un benchmark de velocidad para computadoras"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es el 'procesamiento del lenguaje natural' (NLP)?",
+            answers: [
+                "Hablar naturalmente con computadoras",
+                "IA que entiende y genera lenguaje humano",
+                "Un tipo de teclado",
+                "Tecnología de grabación de voz"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es el aprendizaje por refuerzo?",
+            answers: [
+                "Aprender solo por repetición",
+                "Aprender a través de recompensas y penalizaciones",
+                "Reforzar el hardware de la computadora",
+                "Sistemas de aprendizaje de respaldo"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es una 'alucinación' de IA?",
+            answers: [
+                "IA que sueña",
+                "IA que genera información falsa o inventada con confianza",
+                "Fallos visuales en pantalla",
+                "IA que se niega a responder"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué es la IA generativa?",
+            answers: [
+                "IA que genera electricidad",
+                "IA que crea nuevo contenido como texto, imágenes o música",
+                "La próxima generación de computadoras",
+                "IA que solo analiza datos"
+            ],
+            correct: 1
+        },
+        {
+            question: "¿Qué significa GPU en el contexto de IA?",
+            answers: [
+                "General Purpose Unit",
+                "Graphics Processing Unit",
+                "Gigabyte Power Usage",
+                "Global Processing Utility"
+            ],
+            correct: 1
+        }
     ]
 };
 
@@ -470,6 +858,8 @@ function applyTranslations() {
     // Update language button states
     document.getElementById('lang-en').classList.toggle('active', currentLanguage === 'en');
     document.getElementById('lang-de').classList.toggle('active', currentLanguage === 'de');
+    document.getElementById('lang-fr').classList.toggle('active', currentLanguage === 'fr');
+    document.getElementById('lang-es').classList.toggle('active', currentLanguage === 'es');
 }
 
 function setLanguage(lang) {
@@ -566,6 +956,8 @@ function init() {
     // Language event listeners
     document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
     document.getElementById('lang-de').addEventListener('click', () => setLanguage('de'));
+    document.getElementById('lang-fr').addEventListener('click', () => setLanguage('fr'));
+    document.getElementById('lang-es').addEventListener('click', () => setLanguage('es'));
     
     // Load saved language preference or default to English
     const savedLang = localStorage.getItem('aimaze-language') || 'en';
