@@ -528,32 +528,316 @@ body {
     font-size: 1.1rem;
 }
 
+/* Canvas Container */
+#canvas-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Touch Controls */
+.touch-controls {
+    display: none;
+    justify-content: center;
+    margin-top: 16px;
+    padding: 10px;
+    touch-action: manipulation;
+}
+
+.dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+    width: 160px;
+    height: 160px;
+}
+
+.dpad-btn {
+    background: var(--background-elevated);
+    border: 2px solid var(--siemens-petrol);
+    border-radius: 8px;
+    color: var(--siemens-petrol);
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.1s ease;
+}
+
+.dpad-btn:active {
+    background: var(--siemens-petrol);
+    color: var(--siemens-white);
+    transform: scale(0.95);
+}
+
+.dpad-up { grid-column: 2; grid-row: 1; }
+.dpad-left { grid-column: 1; grid-row: 2; }
+.dpad-center { grid-column: 2; grid-row: 2; background: var(--siemens-teal); border-color: var(--siemens-teal); }
+.dpad-right { grid-column: 3; grid-row: 2; }
+.dpad-down { grid-column: 2; grid-row: 3; }
+
+/* Prevent text selection and callouts on mobile */
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Safe area insets for notched phones */
+@supports (padding: env(safe-area-inset-bottom)) {
+    #game-container {
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
 /* Responsive */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    body {
+        align-items: flex-start;
+        padding-top: 10px;
+    }
+
+    #game-container {
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .screen {
+        min-height: auto;
+        padding-bottom: 20px;
+    }
+
     .game-title {
         font-size: 2.2rem;
         letter-spacing: 2px;
     }
 
+    .subtitle {
+        font-size: 0.95rem;
+        text-align: center;
+        padding: 0 10px;
+    }
+
     .instructions {
-        padding: 20px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        max-width: 100%;
+    }
+
+    .instructions li {
+        font-size: 0.85rem;
+        padding: 8px 0;
+        padding-left: 20px;
+    }
+
+    .key {
+        padding: 2px 6px;
+        font-size: 0.75rem;
+    }
+
+    #game-screen {
+        padding: 0;
     }
 
     #game-header {
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 8px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        border-radius: 0;
+        max-width: 100%;
     }
 
     .stat {
         flex: 1;
-        min-width: 70px;
+        min-width: 60px;
+    }
+
+    .stat-label {
+        font-size: 0.55rem;
+        margin-bottom: 4px;
+    }
+
+    .stat-value {
+        font-size: 1rem;
+    }
+
+    #game-canvas {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .touch-controls {
+        display: flex;
+    }
+
+    .results-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .result-item {
+        padding: 16px 12px;
+    }
+
+    .result-label {
+        font-size: 0.6rem;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+    }
+
+    .results-title {
+        font-size: 1.8rem;
+        margin-bottom: 24px;
+    }
+
+    .gameover-title {
+        font-size: 1.8rem;
+    }
+
+    .grade {
+        font-size: 1rem;
+        padding: 12px 24px;
+    }
+
+    .game-btn {
+        padding: 14px 36px;
+        font-size: 0.9rem;
+        width: calc(100% - 40px);
+        max-width: 300px;
+    }
+
+    .modal-content {
+        padding: 24px 16px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .question-title {
+        font-size: 1rem;
+        margin-bottom: 16px;
+    }
+
+    .question-text {
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .answer-btn {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+    }
+
+    .feedback {
+        margin-top: 16px;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+    .language-selector {
+        gap: 8px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .lang-btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+
+    .lang-divider {
+        display: none;
+    }
+
+    .survey-link-container {
+        margin-bottom: 20px;
+    }
+
+    .survey-btn {
+        font-size: 0.85rem;
+        padding: 10px 16px;
+    }
+}
+
+/* Extra small screens (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    .game-title {
+        font-size: 1.8rem;
+    }
+
+    .dpad {
+        width: 140px;
+        height: 140px;
+    }
+
+    .dpad-btn {
+        font-size: 1.2rem;
+    }
+
+    .stat-value {
+        font-size: 0.9rem;
     }
 
     .results-container {
         grid-template-columns: 1fr;
     }
+}
 
-    .modal-content {
-        padding: 28px 20px;
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    body {
+        align-items: flex-start;
+    }
+
+    .screen {
+        min-height: auto;
+    }
+
+    #game-screen {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #game-header {
+        order: 1;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    #canvas-container {
+        order: 2;
+    }
+
+    .touch-controls {
+        order: 3;
+        margin-top: 0;
+        margin-left: 10px;
+    }
+
+    .dpad {
+        width: 120px;
+        height: 120px;
+    }
+
+    .instructions {
+        max-height: 200px;
+        overflow-y: auto;
     }
 }

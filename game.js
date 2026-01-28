@@ -10,7 +10,7 @@ const TRANSLATIONS = {
         surveyPrompt: "Don't have time to play?",
         surveyBtn: "Take the Quick Survey",
         howToPlay: "How to Play",
-        instruction1: 'Use <span class="key">Arrow Keys</span> or <span class="key">WASD</span> to navigate',
+        instruction1: 'Use <span class="key">Arrow Keys</span>, <span class="key">WASD</span>, or <span class="key">Swipe</span> to navigate',
         instruction2: "Collect the glowing dots to earn points",
         instruction3: "Question bubbles spawn periodically - collect them!",
         instruction4: '<span class="highlight-green">Correct answers</span> freeze ghosts and award bonus points',
@@ -67,7 +67,7 @@ const TRANSLATIONS = {
         surveyPrompt: "Keine Zeit zum Spielen?",
         surveyBtn: "Zur Schnellumfrage",
         howToPlay: "Spielanleitung",
-        instruction1: 'Benutze <span class="key">Pfeiltasten</span> oder <span class="key">WASD</span> zum Navigieren',
+        instruction1: 'Benutze <span class="key">Pfeiltasten</span>, <span class="key">WASD</span> oder <span class="key">Wischen</span> zum Navigieren',
         instruction2: "Sammle die leuchtenden Punkte für Punkte",
         instruction3: "Fragenblasen erscheinen regelmäßig - sammle sie!",
         instruction4: '<span class="highlight-green">Richtige Antworten</span> frieren Geister ein und geben Bonuspunkte',
@@ -124,7 +124,7 @@ const TRANSLATIONS = {
         surveyPrompt: "Pas le temps de jouer ?",
         surveyBtn: "Répondre au sondage rapide",
         howToPlay: "Comment jouer",
-        instruction1: 'Utilisez les <span class="key">Flèches</span> ou <span class="key">WASD</span> pour naviguer',
+        instruction1: 'Utilisez les <span class="key">Flèches</span>, <span class="key">WASD</span> ou <span class="key">Balayez</span> pour naviguer',
         instruction2: "Collectez les points lumineux pour gagner des points",
         instruction3: "Des bulles de questions apparaissent régulièrement - collectez-les !",
         instruction4: '<span class="highlight-green">Les bonnes réponses</span> gèlent les fantômes et donnent des points bonus',
@@ -181,7 +181,7 @@ const TRANSLATIONS = {
         surveyPrompt: "¿No tienes tiempo para jugar?",
         surveyBtn: "Responder encuesta rápida",
         howToPlay: "Cómo jugar",
-        instruction1: 'Usa las <span class="key">Flechas</span> o <span class="key">WASD</span> para navegar',
+        instruction1: 'Usa las <span class="key">Flechas</span>, <span class="key">WASD</span> o <span class="key">Desliza</span> para navegar',
         instruction2: "Recoge los puntos brillantes para ganar puntos",
         instruction3: "Las burbujas de preguntas aparecen periódicamente - ¡recógelas!",
         instruction4: '<span class="highlight-green">Las respuestas correctas</span> congelan a los fantasmas y dan puntos extra',
@@ -278,554 +278,494 @@ const MAZE_TEMPLATE = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ];
 
-// ==================== AI QUESTIONS ====================
+// ==================== AI SKILL ASSESSMENT QUESTIONS ====================
 const AI_QUESTIONS = {
     en: [
         {
-            question: "What does AI stand for?",
-            answers: ["Artificial Intelligence", "Automated Integration", "Advanced Internet", "Applied Informatics"],
-            correct: 0
-        },
-        {
-            question: "Which company developed ChatGPT?",
-            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            question: "Which statement best describes Artificial Intelligence today?",
+            answers: [
+                "AI can think and reason like a human",
+                "AI follows predefined rules and scripts",
+                "AI learns patterns from data to make predictions or generate outputs",
+                "AI is mainly robotics and automation"
+            ],
             correct: 2
         },
         {
-            question: "What is machine learning?",
+            question: "What is the difference between traditional software and machine learning?",
             answers: [
-                "Programming explicit rules for every scenario",
-                "Systems that learn from data to improve performance",
-                "Robots that physically learn to move",
-                "Computers that replace human workers"
+                "There is no real difference",
+                "Machine learning systems learn from data instead of fixed rules",
+                "Machine learning only works in the cloud",
+                "Traditional software is obsolete"
             ],
             correct: 1
         },
         {
-            question: "What is a neural network inspired by?",
-            answers: ["Computer circuits", "The human brain", "Spider webs", "Social networks"],
-            correct: 1
+            question: "Large Language Models (LLMs) like ChatGPT primarily work by:",
+            answers: [
+                "Searching the internet in real time",
+                "Remembering previous conversations forever",
+                "Predicting the next token based on probabilities",
+                "Using a predefined knowledge database"
+            ],
+            correct: 2
         },
         {
-            question: "What is 'training' in machine learning?",
+            question: "When AI gives an incorrect or weak output, what should you do?",
             answers: [
-                "Teaching robots physical exercises",
-                "The process of a model learning from data",
-                "Human operators learning to use AI",
-                "Installing software updates"
+                "Assume the tool doesn't work well",
+                "Try again with a slightly different prompt",
+                "Refine instructions, constraints, or examples",
+                "Analyze model limitations, data context, and task framing"
+            ],
+            correct: 3
+        },
+        {
+            question: "Which prompt would most likely produce the best result?",
+            answers: [
+                "Write a summary of this document.",
+                "Summarize this document.",
+                "You are a domain expert. Summarize for a senior executive in 5 bullet points, focusing on risks and decisions.",
+                "Make this text shorter."
+            ],
+            correct: 2
+        },
+        {
+            question: "Where is the biggest value of AI in organizations?",
+            answers: [
+                "Replacing employees",
+                "Automating repetitive tasks",
+                "Supporting decision-making and productivity",
+                "Creating new business models and capabilities"
+            ],
+            correct: 3
+        },
+        {
+            question: "Who is responsible for the output of an AI system in a business context?",
+            answers: [
+                "The AI provider",
+                "The IT department",
+                "The employee using it",
+                "The AI itself"
+            ],
+            correct: 2
+        },
+        {
+            question: "What does 'fine-tuning' an AI model mean?",
+            answers: [
+                "Adjusting prompt wording",
+                "Training a model further on specific data",
+                "Increasing response speed",
+                "Enabling plugins"
             ],
             correct: 1
         },
         {
-            question: "What is a 'Large Language Model' (LLM)?",
+            question: "Which statement about AI governance is most accurate?",
             answers: [
-                "A very big dictionary",
-                "An AI trained on vast text data to understand and generate language",
-                "A programming language for large companies",
-                "A type of computer memory"
+                "Governance blocks innovation",
+                "Governance is mainly an IT topic",
+                "Governance enables safe, scalable AI adoption",
+                "Governance is only needed for regulated industries"
+            ],
+            correct: 2
+        },
+        {
+            question: "You want to deploy an AI assistant internally. What should be your first concern?",
+            answers: [
+                "UI and user experience",
+                "Accuracy of answers",
+                "Data sources, access, and security",
+                "Marketing and adoption"
+            ],
+            correct: 2
+        },
+        {
+            question: "Which of the following is a key risk of enterprise AI usage?",
+            answers: [
+                "AI systems are too expensive to maintain",
+                "Hallucinations and incorrect outputs",
+                "AI always requires internet connection",
+                "AI cannot process large amounts of data"
             ],
             correct: 1
         },
         {
-            question: "What is 'deep learning'?",
+            question: "What is an effective prompting technique?",
             answers: [
-                "Learning while sleeping",
-                "Neural networks with many layers",
-                "Studying AI for many years",
-                "Underground data centers"
+                "Keep prompts as short as possible",
+                "Avoid giving examples to the AI",
+                "Include role, format, constraints, and examples",
+                "Use technical jargon the AI might not understand"
             ],
-            correct: 1
-        },
-        {
-            question: "What is a 'prompt' in AI?",
-            answers: [
-                "A reminder notification",
-                "The input text given to an AI model",
-                "A type of AI error",
-                "The AI's response"
-            ],
-            correct: 1
-        },
-        {
-            question: "What is 'computer vision'?",
-            answers: [
-                "A computer screen",
-                "AI that can interpret and understand images",
-                "Virtual reality glasses",
-                "High-resolution displays"
-            ],
-            correct: 1
-        },
-        {
-            question: "What is the 'Turing Test'?",
-            answers: [
-                "A programming certification",
-                "A test to see if AI can exhibit human-like intelligence",
-                "A security vulnerability scan",
-                "A speed benchmark for computers"
-            ],
-            correct: 1
-        },
-        {
-            question: "What is 'natural language processing' (NLP)?",
-            answers: [
-                "Speaking naturally to computers",
-                "AI understanding and generating human language",
-                "A type of keyboard",
-                "Voice recording technology"
-            ],
-            correct: 1
-        },
-        {
-            question: "What is 'reinforcement learning'?",
-            answers: [
-                "Learning by repetition only",
-                "Learning through rewards and penalties",
-                "Strengthening computer hardware",
-                "Backup learning systems"
-            ],
-            correct: 1
-        },
-        {
-            question: "What is an AI 'hallucination'?",
-            answers: [
-                "AI having dreams",
-                "AI generating false or made-up information confidently",
-                "Visual glitches on screen",
-                "AI refusing to answer"
-            ],
-            correct: 1
-        },
-        {
-            question: "What is 'generative AI'?",
-            answers: [
-                "AI that generates electricity",
-                "AI that creates new content like text, images, or music",
-                "The next generation of computers",
-                "AI that only analyzes data"
-            ],
-            correct: 1
-        },
-        {
-            question: "What does GPU stand for in AI context?",
-            answers: [
-                "General Purpose Unit",
-                "Graphics Processing Unit",
-                "Gigabyte Power Usage",
-                "Global Processing Utility"
-            ],
-            correct: 1
+            correct: 2
         }
     ],
     de: [
         {
-            question: "Wofür steht KI?",
-            answers: ["Künstliche Intelligenz", "Kontrollierte Integration", "Komplexe Informatik", "Kalkulierte Information"],
-            correct: 0
-        },
-        {
-            question: "Welches Unternehmen hat ChatGPT entwickelt?",
-            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            question: "Welche Aussage beschreibt Künstliche Intelligenz heute am besten?",
+            answers: [
+                "KI kann wie ein Mensch denken und argumentieren",
+                "KI folgt vordefinierten Regeln und Skripten",
+                "KI lernt Muster aus Daten, um Vorhersagen zu treffen oder Outputs zu generieren",
+                "KI ist hauptsächlich Robotik und Automatisierung"
+            ],
             correct: 2
         },
         {
-            question: "Was ist maschinelles Lernen?",
+            question: "Was ist der Unterschied zwischen traditioneller Software und maschinellem Lernen?",
             answers: [
-                "Programmierung expliziter Regeln für jedes Szenario",
-                "Systeme, die aus Daten lernen um sich zu verbessern",
-                "Roboter, die physisch lernen sich zu bewegen",
-                "Computer, die menschliche Arbeiter ersetzen"
+                "Es gibt keinen wirklichen Unterschied",
+                "Machine-Learning-Systeme lernen aus Daten statt aus festen Regeln",
+                "Maschinelles Lernen funktioniert nur in der Cloud",
+                "Traditionelle Software ist veraltet"
             ],
             correct: 1
         },
         {
-            question: "Wovon ist ein neuronales Netzwerk inspiriert?",
-            answers: ["Computerschaltkreisen", "Dem menschlichen Gehirn", "Spinnennetzen", "Sozialen Netzwerken"],
-            correct: 1
+            question: "Große Sprachmodelle (LLMs) wie ChatGPT funktionieren hauptsächlich durch:",
+            answers: [
+                "Echtzeit-Suche im Internet",
+                "Ewiges Speichern vorheriger Gespräche",
+                "Vorhersage des nächsten Tokens basierend auf Wahrscheinlichkeiten",
+                "Verwendung einer vordefinierten Wissensdatenbank"
+            ],
+            correct: 2
         },
         {
-            question: "Was ist 'Training' beim maschinellen Lernen?",
+            question: "Was sollten Sie tun, wenn KI ein falsches oder schwaches Ergebnis liefert?",
             answers: [
-                "Robotern körperliche Übungen beibringen",
-                "Der Prozess, bei dem ein Modell aus Daten lernt",
-                "Menschen lernen KI zu bedienen",
-                "Software-Updates installieren"
+                "Annehmen, dass das Tool nicht gut funktioniert",
+                "Mit einem leicht veränderten Prompt erneut versuchen",
+                "Anweisungen, Einschränkungen oder Beispiele verfeinern",
+                "Modellbeschränkungen, Datenkontext und Aufgabenstellung analysieren"
+            ],
+            correct: 3
+        },
+        {
+            question: "Welcher Prompt würde wahrscheinlich das beste Ergebnis liefern?",
+            answers: [
+                "Schreibe eine Zusammenfassung dieses Dokuments.",
+                "Fasse dieses Dokument zusammen.",
+                "Du bist ein Fachexperte. Fasse für eine Führungskraft in 5 Punkten zusammen, fokussiert auf Risiken und Entscheidungen.",
+                "Mache diesen Text kürzer."
+            ],
+            correct: 2
+        },
+        {
+            question: "Wo liegt der größte Wert von KI in Organisationen?",
+            answers: [
+                "Mitarbeiter ersetzen",
+                "Repetitive Aufgaben automatisieren",
+                "Entscheidungsfindung und Produktivität unterstützen",
+                "Neue Geschäftsmodelle und Fähigkeiten schaffen"
+            ],
+            correct: 3
+        },
+        {
+            question: "Wer ist für die Ausgabe eines KI-Systems im Geschäftskontext verantwortlich?",
+            answers: [
+                "Der KI-Anbieter",
+                "Die IT-Abteilung",
+                "Der Mitarbeiter, der es nutzt",
+                "Die KI selbst"
+            ],
+            correct: 2
+        },
+        {
+            question: "Was bedeutet 'Fine-Tuning' eines KI-Modells?",
+            answers: [
+                "Prompt-Formulierung anpassen",
+                "Ein Modell mit spezifischen Daten weiter trainieren",
+                "Antwortgeschwindigkeit erhöhen",
+                "Plugins aktivieren"
             ],
             correct: 1
         },
         {
-            question: "Was ist ein 'Large Language Model' (LLM)?",
+            question: "Welche Aussage über KI-Governance ist am zutreffendsten?",
             answers: [
-                "Ein sehr großes Wörterbuch",
-                "Eine KI, die auf großen Textmengen trainiert wurde um Sprache zu verstehen",
-                "Eine Programmiersprache für große Unternehmen",
-                "Eine Art Computerspeicher"
+                "Governance blockiert Innovation",
+                "Governance ist hauptsächlich ein IT-Thema",
+                "Governance ermöglicht sichere, skalierbare KI-Einführung",
+                "Governance wird nur für regulierte Branchen benötigt"
+            ],
+            correct: 2
+        },
+        {
+            question: "Sie möchten intern einen KI-Assistenten einsetzen. Was sollte Ihre erste Sorge sein?",
+            answers: [
+                "UI und Benutzererfahrung",
+                "Genauigkeit der Antworten",
+                "Datenquellen, Zugang und Sicherheit",
+                "Marketing und Akzeptanz"
+            ],
+            correct: 2
+        },
+        {
+            question: "Was ist ein wesentliches Risiko der KI-Nutzung in Unternehmen?",
+            answers: [
+                "KI-Systeme sind zu teuer in der Wartung",
+                "Halluzinationen und falsche Ausgaben",
+                "KI benötigt immer eine Internetverbindung",
+                "KI kann keine großen Datenmengen verarbeiten"
             ],
             correct: 1
         },
         {
-            question: "Was ist 'Deep Learning'?",
+            question: "Was ist eine effektive Prompting-Technik?",
             answers: [
-                "Lernen im Schlaf",
-                "Neuronale Netzwerke mit vielen Schichten",
-                "Jahrelanges KI-Studium",
-                "Unterirdische Rechenzentren"
+                "Prompts so kurz wie möglich halten",
+                "Keine Beispiele an die KI geben",
+                "Rolle, Format, Einschränkungen und Beispiele einbeziehen",
+                "Fachbegriffe verwenden, die die KI möglicherweise nicht versteht"
             ],
-            correct: 1
-        },
-        {
-            question: "Was ist ein 'Prompt' in der KI?",
-            answers: [
-                "Eine Erinnerungsbenachrichtigung",
-                "Der Eingabetext für ein KI-Modell",
-                "Eine Art KI-Fehler",
-                "Die Antwort der KI"
-            ],
-            correct: 1
-        },
-        {
-            question: "Was ist 'Computer Vision'?",
-            answers: [
-                "Ein Computerbildschirm",
-                "KI, die Bilder interpretieren und verstehen kann",
-                "Virtual-Reality-Brillen",
-                "Hochauflösende Displays"
-            ],
-            correct: 1
-        },
-        {
-            question: "Was ist der 'Turing-Test'?",
-            answers: [
-                "Eine Programmierzertifizierung",
-                "Ein Test, ob KI menschenähnliche Intelligenz zeigen kann",
-                "Ein Sicherheits-Schwachstellenscan",
-                "Ein Geschwindigkeitsbenchmark für Computer"
-            ],
-            correct: 1
-        },
-        {
-            question: "Was ist 'Natural Language Processing' (NLP)?",
-            answers: [
-                "Natürlich mit Computern sprechen",
-                "KI, die menschliche Sprache versteht und erzeugt",
-                "Eine Art Tastatur",
-                "Sprachaufnahmetechnologie"
-            ],
-            correct: 1
-        },
-        {
-            question: "Was ist 'Reinforcement Learning'?",
-            answers: [
-                "Lernen nur durch Wiederholung",
-                "Lernen durch Belohnungen und Bestrafungen",
-                "Verstärkung von Computer-Hardware",
-                "Backup-Lernsysteme"
-            ],
-            correct: 1
-        },
-        {
-            question: "Was ist eine KI-'Halluzination'?",
-            answers: [
-                "KI, die träumt",
-                "KI, die selbstbewusst falsche Informationen erzeugt",
-                "Visuelle Bildschirmfehler",
-                "KI, die nicht antwortet"
-            ],
-            correct: 1
-        },
-        {
-            question: "Was ist 'generative KI'?",
-            answers: [
-                "KI, die Strom erzeugt",
-                "KI, die neue Inhalte wie Text, Bilder oder Musik erstellt",
-                "Die nächste Computergeneration",
-                "KI, die nur Daten analysiert"
-            ],
-            correct: 1
-        },
-        {
-            question: "Wofür steht GPU im KI-Kontext?",
-            answers: [
-                "General Purpose Unit",
-                "Graphics Processing Unit",
-                "Gigabyte Power Usage",
-                "Global Processing Utility"
-            ],
-            correct: 1
+            correct: 2
         }
     ],
     fr: [
         {
-            question: "Que signifie IA ?",
-            answers: ["Intelligence Artificielle", "Intégration Automatisée", "Internet Avancé", "Informatique Appliquée"],
-            correct: 0
-        },
-        {
-            question: "Quelle entreprise a développé ChatGPT ?",
-            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            question: "Quelle affirmation décrit le mieux l'Intelligence Artificielle aujourd'hui ?",
+            answers: [
+                "L'IA peut penser et raisonner comme un humain",
+                "L'IA suit des règles et scripts prédéfinis",
+                "L'IA apprend des modèles à partir de données pour faire des prédictions ou générer des résultats",
+                "L'IA est principalement de la robotique et de l'automatisation"
+            ],
             correct: 2
         },
         {
-            question: "Qu'est-ce que l'apprentissage automatique ?",
+            question: "Quelle est la différence entre les logiciels traditionnels et l'apprentissage automatique ?",
             answers: [
-                "Programmer des règles explicites pour chaque scénario",
-                "Des systèmes qui apprennent des données pour améliorer leurs performances",
-                "Des robots qui apprennent physiquement à se déplacer",
-                "Des ordinateurs qui remplacent les travailleurs humains"
+                "Il n'y a pas de vraie différence",
+                "Les systèmes d'apprentissage automatique apprennent des données au lieu de règles fixes",
+                "L'apprentissage automatique ne fonctionne que dans le cloud",
+                "Les logiciels traditionnels sont obsolètes"
             ],
             correct: 1
         },
         {
-            question: "De quoi s'inspire un réseau de neurones ?",
-            answers: ["Des circuits informatiques", "Du cerveau humain", "Des toiles d'araignée", "Des réseaux sociaux"],
-            correct: 1
+            question: "Les grands modèles de langage (LLM) comme ChatGPT fonctionnent principalement en :",
+            answers: [
+                "Recherchant sur internet en temps réel",
+                "Mémorisant les conversations précédentes pour toujours",
+                "Prédisant le prochain token basé sur les probabilités",
+                "Utilisant une base de données de connaissances prédéfinie"
+            ],
+            correct: 2
         },
         {
-            question: "Qu'est-ce que l'entraînement en apprentissage automatique ?",
+            question: "Que devez-vous faire lorsque l'IA donne un résultat incorrect ou faible ?",
             answers: [
-                "Enseigner des exercices physiques aux robots",
-                "Le processus par lequel un modèle apprend des données",
-                "Les opérateurs humains apprenant à utiliser l'IA",
-                "L'installation de mises à jour logicielles"
+                "Supposer que l'outil ne fonctionne pas bien",
+                "Réessayer avec un prompt légèrement différent",
+                "Affiner les instructions, contraintes ou exemples",
+                "Analyser les limites du modèle, le contexte des données et le cadrage de la tâche"
+            ],
+            correct: 3
+        },
+        {
+            question: "Quel prompt produirait probablement le meilleur résultat ?",
+            answers: [
+                "Écris un résumé de ce document.",
+                "Résume ce document.",
+                "Tu es un expert du domaine. Résume pour un cadre dirigeant en 5 points, en te concentrant sur les risques et décisions.",
+                "Rends ce texte plus court."
+            ],
+            correct: 2
+        },
+        {
+            question: "Où se trouve la plus grande valeur de l'IA dans les organisations ?",
+            answers: [
+                "Remplacer les employés",
+                "Automatiser les tâches répétitives",
+                "Soutenir la prise de décision et la productivité",
+                "Créer de nouveaux modèles commerciaux et capacités"
+            ],
+            correct: 3
+        },
+        {
+            question: "Qui est responsable de la sortie d'un système d'IA dans un contexte professionnel ?",
+            answers: [
+                "Le fournisseur d'IA",
+                "Le département informatique",
+                "L'employé qui l'utilise",
+                "L'IA elle-même"
+            ],
+            correct: 2
+        },
+        {
+            question: "Que signifie le 'fine-tuning' d'un modèle d'IA ?",
+            answers: [
+                "Ajuster la formulation du prompt",
+                "Entraîner davantage un modèle sur des données spécifiques",
+                "Augmenter la vitesse de réponse",
+                "Activer des plugins"
             ],
             correct: 1
         },
         {
-            question: "Qu'est-ce qu'un 'Grand Modèle de Langage' (LLM) ?",
+            question: "Quelle affirmation sur la gouvernance de l'IA est la plus précise ?",
             answers: [
-                "Un très gros dictionnaire",
-                "Une IA entraînée sur de vastes données textuelles pour comprendre et générer du langage",
-                "Un langage de programmation pour grandes entreprises",
-                "Un type de mémoire informatique"
+                "La gouvernance bloque l'innovation",
+                "La gouvernance est principalement un sujet informatique",
+                "La gouvernance permet une adoption sûre et évolutive de l'IA",
+                "La gouvernance n'est nécessaire que pour les industries réglementées"
+            ],
+            correct: 2
+        },
+        {
+            question: "Vous voulez déployer un assistant IA en interne. Quelle devrait être votre première préoccupation ?",
+            answers: [
+                "L'interface utilisateur et l'expérience utilisateur",
+                "La précision des réponses",
+                "Les sources de données, l'accès et la sécurité",
+                "Le marketing et l'adoption"
+            ],
+            correct: 2
+        },
+        {
+            question: "Quel est un risque clé de l'utilisation de l'IA en entreprise ?",
+            answers: [
+                "Les systèmes d'IA sont trop coûteux à maintenir",
+                "Les hallucinations et les résultats incorrects",
+                "L'IA nécessite toujours une connexion internet",
+                "L'IA ne peut pas traiter de grandes quantités de données"
             ],
             correct: 1
         },
         {
-            question: "Qu'est-ce que le 'deep learning' ?",
+            question: "Quelle est une technique de prompting efficace ?",
             answers: [
-                "Apprendre en dormant",
-                "Des réseaux de neurones avec de nombreuses couches",
-                "Étudier l'IA pendant de nombreuses années",
-                "Des centres de données souterrains"
+                "Garder les prompts aussi courts que possible",
+                "Éviter de donner des exemples à l'IA",
+                "Inclure le rôle, le format, les contraintes et des exemples",
+                "Utiliser un jargon technique que l'IA pourrait ne pas comprendre"
             ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce qu'un 'prompt' en IA ?",
-            answers: [
-                "Une notification de rappel",
-                "Le texte d'entrée donné à un modèle d'IA",
-                "Un type d'erreur IA",
-                "La réponse de l'IA"
-            ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce que la 'vision par ordinateur' ?",
-            answers: [
-                "Un écran d'ordinateur",
-                "L'IA capable d'interpréter et comprendre les images",
-                "Des lunettes de réalité virtuelle",
-                "Des écrans haute résolution"
-            ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce que le 'Test de Turing' ?",
-            answers: [
-                "Une certification en programmation",
-                "Un test pour voir si l'IA peut exhiber une intelligence semblable à l'humain",
-                "Un scan de vulnérabilité de sécurité",
-                "Un benchmark de vitesse pour ordinateurs"
-            ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce que le 'traitement du langage naturel' (NLP) ?",
-            answers: [
-                "Parler naturellement aux ordinateurs",
-                "L'IA comprenant et générant le langage humain",
-                "Un type de clavier",
-                "Une technologie d'enregistrement vocal"
-            ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce que l'apprentissage par renforcement ?",
-            answers: [
-                "Apprendre uniquement par répétition",
-                "Apprendre par récompenses et pénalités",
-                "Renforcer le matériel informatique",
-                "Des systèmes d'apprentissage de secours"
-            ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce qu'une 'hallucination' IA ?",
-            answers: [
-                "L'IA qui rêve",
-                "L'IA générant des informations fausses ou inventées avec assurance",
-                "Des glitches visuels à l'écran",
-                "L'IA refusant de répondre"
-            ],
-            correct: 1
-        },
-        {
-            question: "Qu'est-ce que l'IA générative ?",
-            answers: [
-                "L'IA qui génère de l'électricité",
-                "L'IA qui crée du nouveau contenu comme du texte, des images ou de la musique",
-                "La prochaine génération d'ordinateurs",
-                "L'IA qui analyse uniquement les données"
-            ],
-            correct: 1
-        },
-        {
-            question: "Que signifie GPU dans le contexte de l'IA ?",
-            answers: [
-                "General Purpose Unit",
-                "Graphics Processing Unit",
-                "Gigabyte Power Usage",
-                "Global Processing Utility"
-            ],
-            correct: 1
+            correct: 2
         }
     ],
     es: [
         {
-            question: "¿Qué significa IA?",
-            answers: ["Inteligencia Artificial", "Integración Automatizada", "Internet Avanzado", "Informática Aplicada"],
-            correct: 0
-        },
-        {
-            question: "¿Qué empresa desarrolló ChatGPT?",
-            answers: ["Google", "Microsoft", "OpenAI", "Meta"],
+            question: "¿Qué afirmación describe mejor la Inteligencia Artificial hoy en día?",
+            answers: [
+                "La IA puede pensar y razonar como un humano",
+                "La IA sigue reglas y scripts predefinidos",
+                "La IA aprende patrones de datos para hacer predicciones o generar resultados",
+                "La IA es principalmente robótica y automatización"
+            ],
             correct: 2
         },
         {
-            question: "¿Qué es el aprendizaje automático?",
+            question: "¿Cuál es la diferencia entre el software tradicional y el aprendizaje automático?",
             answers: [
-                "Programar reglas explícitas para cada escenario",
-                "Sistemas que aprenden de los datos para mejorar su rendimiento",
-                "Robots que aprenden físicamente a moverse",
-                "Computadoras que reemplazan a los trabajadores humanos"
+                "No hay diferencia real",
+                "Los sistemas de aprendizaje automático aprenden de datos en lugar de reglas fijas",
+                "El aprendizaje automático solo funciona en la nube",
+                "El software tradicional está obsoleto"
             ],
             correct: 1
         },
         {
-            question: "¿En qué se inspira una red neuronal?",
-            answers: ["Circuitos de computadora", "El cerebro humano", "Telarañas", "Redes sociales"],
-            correct: 1
+            question: "Los Modelos de Lenguaje Grande (LLM) como ChatGPT funcionan principalmente:",
+            answers: [
+                "Buscando en internet en tiempo real",
+                "Recordando conversaciones anteriores para siempre",
+                "Prediciendo el siguiente token basado en probabilidades",
+                "Usando una base de datos de conocimiento predefinida"
+            ],
+            correct: 2
         },
         {
-            question: "¿Qué es el 'entrenamiento' en aprendizaje automático?",
+            question: "¿Qué debes hacer cuando la IA da un resultado incorrecto o débil?",
             answers: [
-                "Enseñar ejercicios físicos a robots",
-                "El proceso mediante el cual un modelo aprende de los datos",
-                "Operadores humanos aprendiendo a usar IA",
-                "Instalar actualizaciones de software"
+                "Asumir que la herramienta no funciona bien",
+                "Intentar de nuevo con un prompt ligeramente diferente",
+                "Refinar instrucciones, restricciones o ejemplos",
+                "Analizar limitaciones del modelo, contexto de datos y enmarcado de la tarea"
+            ],
+            correct: 3
+        },
+        {
+            question: "¿Qué prompt probablemente produciría el mejor resultado?",
+            answers: [
+                "Escribe un resumen de este documento.",
+                "Resume este documento.",
+                "Eres un experto en el dominio. Resume para un ejecutivo senior en 5 puntos, enfocándote en riesgos y decisiones.",
+                "Haz este texto más corto."
+            ],
+            correct: 2
+        },
+        {
+            question: "¿Dónde está el mayor valor de la IA en las organizaciones?",
+            answers: [
+                "Reemplazar empleados",
+                "Automatizar tareas repetitivas",
+                "Apoyar la toma de decisiones y la productividad",
+                "Crear nuevos modelos de negocio y capacidades"
+            ],
+            correct: 3
+        },
+        {
+            question: "¿Quién es responsable del resultado de un sistema de IA en un contexto empresarial?",
+            answers: [
+                "El proveedor de IA",
+                "El departamento de TI",
+                "El empleado que lo usa",
+                "La IA misma"
+            ],
+            correct: 2
+        },
+        {
+            question: "¿Qué significa 'fine-tuning' de un modelo de IA?",
+            answers: [
+                "Ajustar la redacción del prompt",
+                "Entrenar más un modelo con datos específicos",
+                "Aumentar la velocidad de respuesta",
+                "Habilitar plugins"
             ],
             correct: 1
         },
         {
-            question: "¿Qué es un 'Modelo de Lenguaje Grande' (LLM)?",
+            question: "¿Qué afirmación sobre la gobernanza de IA es más precisa?",
             answers: [
-                "Un diccionario muy grande",
-                "Una IA entrenada con grandes cantidades de texto para entender y generar lenguaje",
-                "Un lenguaje de programación para grandes empresas",
-                "Un tipo de memoria de computadora"
+                "La gobernanza bloquea la innovación",
+                "La gobernanza es principalmente un tema de TI",
+                "La gobernanza permite una adopción segura y escalable de IA",
+                "La gobernanza solo es necesaria para industrias reguladas"
+            ],
+            correct: 2
+        },
+        {
+            question: "Quieres implementar un asistente de IA internamente. ¿Cuál debería ser tu primera preocupación?",
+            answers: [
+                "UI y experiencia de usuario",
+                "Precisión de las respuestas",
+                "Fuentes de datos, acceso y seguridad",
+                "Marketing y adopción"
+            ],
+            correct: 2
+        },
+        {
+            question: "¿Cuál es un riesgo clave del uso de IA empresarial?",
+            answers: [
+                "Los sistemas de IA son demasiado costosos de mantener",
+                "Alucinaciones y resultados incorrectos",
+                "La IA siempre requiere conexión a internet",
+                "La IA no puede procesar grandes cantidades de datos"
             ],
             correct: 1
         },
         {
-            question: "¿Qué es el 'deep learning'?",
+            question: "¿Cuál es una técnica de prompting efectiva?",
             answers: [
-                "Aprender mientras duermes",
-                "Redes neuronales con muchas capas",
-                "Estudiar IA durante muchos años",
-                "Centros de datos subterráneos"
+                "Mantener los prompts lo más cortos posible",
+                "Evitar dar ejemplos a la IA",
+                "Incluir rol, formato, restricciones y ejemplos",
+                "Usar jerga técnica que la IA podría no entender"
             ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es un 'prompt' en IA?",
-            answers: [
-                "Una notificación de recordatorio",
-                "El texto de entrada dado a un modelo de IA",
-                "Un tipo de error de IA",
-                "La respuesta de la IA"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es la 'visión por computadora'?",
-            answers: [
-                "Una pantalla de computadora",
-                "IA que puede interpretar y entender imágenes",
-                "Gafas de realidad virtual",
-                "Pantallas de alta resolución"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es el 'Test de Turing'?",
-            answers: [
-                "Una certificación de programación",
-                "Una prueba para ver si la IA puede exhibir inteligencia similar a la humana",
-                "Un escaneo de vulnerabilidades de seguridad",
-                "Un benchmark de velocidad para computadoras"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es el 'procesamiento del lenguaje natural' (NLP)?",
-            answers: [
-                "Hablar naturalmente con computadoras",
-                "IA que entiende y genera lenguaje humano",
-                "Un tipo de teclado",
-                "Tecnología de grabación de voz"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es el aprendizaje por refuerzo?",
-            answers: [
-                "Aprender solo por repetición",
-                "Aprender a través de recompensas y penalizaciones",
-                "Reforzar el hardware de la computadora",
-                "Sistemas de aprendizaje de respaldo"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es una 'alucinación' de IA?",
-            answers: [
-                "IA que sueña",
-                "IA que genera información falsa o inventada con confianza",
-                "Fallos visuales en pantalla",
-                "IA que se niega a responder"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué es la IA generativa?",
-            answers: [
-                "IA que genera electricidad",
-                "IA que crea nuevo contenido como texto, imágenes o música",
-                "La próxima generación de computadoras",
-                "IA que solo analiza datos"
-            ],
-            correct: 1
-        },
-        {
-            question: "¿Qué significa GPU en el contexto de IA?",
-            answers: [
-                "General Purpose Unit",
-                "Graphics Processing Unit",
-                "Gigabyte Power Usage",
-                "Global Processing Utility"
-            ],
-            correct: 1
+            correct: 2
         }
     ]
 };
@@ -965,6 +905,19 @@ function init() {
     applyTranslations();
     
     document.addEventListener('keydown', handleKeyDown);
+    
+    // Initialize touch controls
+    initTouchControls();
+    
+    // Initialize responsive canvas
+    initResponsiveCanvas();
+    
+    // Prevent pull-to-refresh and other unwanted gestures
+    document.body.addEventListener('touchmove', function(e) {
+        if (gameState.gameRunning && !gameState.gamePaused) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 }
 
 function startGame() {
@@ -1761,6 +1714,139 @@ function handleKeyDown(e) {
             e.preventDefault();
             break;
     }
+}
+
+// ==================== TOUCH CONTROLS ====================
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
+
+function initTouchControls() {
+    // D-pad button controls
+    const dpadButtons = document.querySelectorAll('.dpad-btn[data-direction]');
+    dpadButtons.forEach(btn => {
+        // Touch events for mobile
+        btn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const direction = this.getAttribute('data-direction');
+            if (direction) {
+                setDirection(direction);
+            }
+        }, { passive: false });
+        
+        // Mouse events for desktop testing
+        btn.addEventListener('mousedown', function(e) {
+            const direction = this.getAttribute('data-direction');
+            if (direction) {
+                setDirection(direction);
+            }
+        });
+    });
+    
+    // Swipe controls on canvas
+    if (canvas) {
+        canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+        canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+        canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
+}
+
+function setDirection(direction) {
+    if (!gameState.gameRunning || gameState.gamePaused) return;
+    gameState.player.nextDirection = direction;
+}
+
+function handleTouchStart(e) {
+    if (!gameState.gameRunning || gameState.gamePaused) return;
+    
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchStartTime = Date.now();
+    e.preventDefault();
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+}
+
+function handleTouchEnd(e) {
+    if (!gameState.gameRunning || gameState.gamePaused) return;
+    
+    const touch = e.changedTouches[0];
+    const touchEndX = touch.clientX;
+    const touchEndY = touch.clientY;
+    const touchEndTime = Date.now();
+    
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const deltaTime = touchEndTime - touchStartTime;
+    
+    // Minimum swipe distance and maximum time for a swipe
+    const minSwipeDistance = 30;
+    const maxSwipeTime = 300;
+    
+    if (deltaTime > maxSwipeTime) return;
+    
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    
+    if (Math.max(absDeltaX, absDeltaY) < minSwipeDistance) return;
+    
+    // Determine swipe direction
+    if (absDeltaX > absDeltaY) {
+        // Horizontal swipe
+        if (deltaX > 0) {
+            setDirection('right');
+        } else {
+            setDirection('left');
+        }
+    } else {
+        // Vertical swipe
+        if (deltaY > 0) {
+            setDirection('down');
+        } else {
+            setDirection('up');
+        }
+    }
+    
+    e.preventDefault();
+}
+
+// ==================== RESPONSIVE CANVAS ====================
+function initResponsiveCanvas() {
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('orientationchange', () => {
+        setTimeout(resizeCanvas, 100);
+    });
+}
+
+function resizeCanvas() {
+    if (!canvas) return;
+    
+    const container = document.getElementById('canvas-container');
+    if (!container) return;
+    
+    // Original canvas dimensions
+    const originalWidth = CONFIG.mazeWidth * CONFIG.cellSize;
+    const originalHeight = CONFIG.mazeHeight * CONFIG.cellSize;
+    
+    // Get available space
+    const containerWidth = container.clientWidth;
+    const maxHeight = window.innerHeight * 0.55; // Leave room for header and controls
+    
+    // Calculate scale to fit
+    const scaleX = containerWidth / originalWidth;
+    const scaleY = maxHeight / originalHeight;
+    const scale = Math.min(scaleX, scaleY, 1); // Don't scale up beyond 1
+    
+    // Apply scale via CSS transform for crisp pixels
+    const scaledWidth = originalWidth * scale;
+    const scaledHeight = originalHeight * scale;
+    
+    canvas.style.width = scaledWidth + 'px';
+    canvas.style.height = scaledHeight + 'px';
 }
 
 // ==================== SURVEY FUNCTIONS ====================
