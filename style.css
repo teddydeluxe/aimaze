@@ -50,11 +50,17 @@ body {
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--background);
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     color: var(--text-primary);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+html {
+    height: -webkit-fill-available;
 }
 
 #game-container {
@@ -537,30 +543,41 @@ body {
     overflow: hidden;
 }
 
-/* Touch Controls */
+/* Touch Controls - Split Layout */
 .touch-controls {
     display: none;
-    justify-content: center;
-    margin-top: 16px;
-    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding: 10px 20px;
     touch-action: manipulation;
+    width: 100%;
+    max-width: 400px;
 }
 
-.dpad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 4px;
-    width: 160px;
-    height: 160px;
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.dpad-btn {
+.control-left {
+    align-items: flex-start;
+}
+
+.control-right {
+    flex-direction: row;
+    align-items: center;
+}
+
+.control-btn {
     background: var(--background-elevated);
     border: 2px solid var(--siemens-petrol);
-    border-radius: 8px;
+    border-radius: 12px;
     color: var(--siemens-petrol);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -572,17 +589,11 @@ body {
     transition: all 0.1s ease;
 }
 
-.dpad-btn:active {
+.control-btn:active {
     background: var(--siemens-petrol);
     color: var(--siemens-white);
     transform: scale(0.95);
 }
-
-.dpad-up { grid-column: 2; grid-row: 1; }
-.dpad-left { grid-column: 1; grid-row: 2; }
-.dpad-center { grid-column: 2; grid-row: 2; background: var(--siemens-teal); border-color: var(--siemens-teal); }
-.dpad-right { grid-column: 3; grid-row: 2; }
-.dpad-down { grid-column: 2; grid-row: 3; }
 
 /* Prevent text selection and callouts on mobile */
 body {
@@ -605,39 +616,65 @@ body {
     body {
         align-items: flex-start;
         padding-top: 10px;
+        padding-bottom: 20px;
     }
 
     #game-container {
         padding: 10px;
+        padding-bottom: 30px;
         max-width: 100%;
+        min-height: auto;
     }
 
     .screen {
         min-height: auto;
-        padding-bottom: 20px;
+        padding-bottom: 30px;
+    }
+
+    #start-screen {
+        padding-bottom: 40px;
     }
 
     .game-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
         letter-spacing: 2px;
+        margin-bottom: 4px;
+    }
+
+    .game-title::after {
+        margin: 10px auto 0;
+        width: 60px;
+        height: 3px;
     }
 
     .subtitle {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         text-align: center;
         padding: 0 10px;
+        margin-bottom: 12px;
     }
 
     .instructions {
-        padding: 16px 20px;
-        margin-bottom: 24px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
         max-width: 100%;
     }
 
+    .instructions h3 {
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
     .instructions li {
-        font-size: 0.85rem;
-        padding: 8px 0;
-        padding-left: 20px;
+        font-size: 0.8rem;
+        padding: 5px 0;
+        padding-left: 18px;
+        line-height: 1.4;
+    }
+
+    .instructions li::before {
+        width: 6px;
+        height: 6px;
     }
 
     .key {
@@ -679,6 +716,14 @@ body {
 
     .touch-controls {
         display: flex;
+        max-width: 100%;
+        padding: 10px 15px;
+    }
+
+    .control-btn {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
     }
 
     .results-container {
@@ -765,28 +810,42 @@ body {
     }
 
     .survey-link-container {
-        margin-bottom: 20px;
+        margin-bottom: 14px;
+    }
+
+    .survey-link-text {
+        font-size: 0.8rem;
     }
 
     .survey-btn {
-        font-size: 0.85rem;
-        padding: 10px 16px;
+        font-size: 0.8rem;
+        padding: 8px 14px;
+    }
+
+    .game-btn {
+        margin-top: 10px;
+        padding: 14px 32px;
     }
 }
 
 /* Extra small screens (iPhone SE, etc.) */
 @media (max-width: 380px) {
     .game-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
-    .dpad {
-        width: 140px;
-        height: 140px;
+    .subtitle {
+        font-size: 0.8rem;
     }
 
-    .dpad-btn {
-        font-size: 1.2rem;
+    .instructions li {
+        font-size: 0.75rem;
+    }
+
+    .control-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
     }
 
     .stat-value {
@@ -828,12 +887,20 @@ body {
     .touch-controls {
         order: 3;
         margin-top: 0;
-        margin-left: 10px;
+        flex-direction: column;
+        gap: 5px;
+        max-width: 80px;
     }
 
-    .dpad {
-        width: 120px;
-        height: 120px;
+    .control-group {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .control-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
     }
 
     .instructions {

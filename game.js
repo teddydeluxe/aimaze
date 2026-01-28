@@ -1722,9 +1722,9 @@ let touchStartY = 0;
 let touchStartTime = 0;
 
 function initTouchControls() {
-    // D-pad button controls
-    const dpadButtons = document.querySelectorAll('.dpad-btn[data-direction]');
-    dpadButtons.forEach(btn => {
+    // Control button handlers
+    const controlButtons = document.querySelectorAll('.control-btn[data-direction]');
+    controlButtons.forEach(btn => {
         // Touch events for mobile
         btn.addEventListener('touchstart', function(e) {
             e.preventDefault();
