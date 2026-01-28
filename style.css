@@ -121,8 +121,10 @@ html {
     transition: color 0.2s ease;
 }
 
-.lang-btn:hover {
-    color: var(--siemens-petrol);
+@media (hover: hover) and (pointer: fine) {
+    .lang-btn:hover {
+        color: var(--siemens-petrol);
+    }
 }
 
 .lang-btn.active {
@@ -224,9 +226,15 @@ html {
     letter-spacing: 2px;
 }
 
-.game-btn:hover {
+@media (hover: hover) and (pointer: fine) {
+    .game-btn:hover {
+        background: var(--siemens-teal);
+        transform: translateY(-2px);
+    }
+}
+
+.game-btn:active {
     background: var(--siemens-teal);
-    transform: translateY(-2px);
 }
 
 .game-btn:active {
@@ -350,7 +358,16 @@ html {
     text-align: left;
 }
 
-.answer-btn:hover {
+/* Only apply hover on devices that support it (not touch) */
+@media (hover: hover) and (pointer: fine) {
+    .answer-btn:hover {
+        border-color: var(--siemens-petrol);
+        background: var(--siemens-deep-blue-700);
+    }
+}
+
+/* Active state for touch devices */
+.answer-btn:active {
     border-color: var(--siemens-petrol);
     background: var(--siemens-deep-blue-700);
 }
@@ -509,10 +526,12 @@ html {
     transition: all 0.2s ease;
 }
 
-.survey-btn:hover {
-    color: var(--siemens-bold-green);
-    border-color: var(--siemens-bold-green);
-    background: rgba(0, 255, 185, 0.05);
+@media (hover: hover) and (pointer: fine) {
+    .survey-btn:hover {
+        color: var(--siemens-bold-green);
+        border-color: var(--siemens-bold-green);
+        background: rgba(0, 255, 185, 0.05);
+    }
 }
 
 /* Survey Modal */
