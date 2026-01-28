@@ -897,6 +897,12 @@ function init() {
         });
     }
     
+    // Close survey button
+    const closeSurveyBtn = document.getElementById('close-survey-btn');
+    if (closeSurveyBtn) {
+        closeSurveyBtn.addEventListener('click', closeSurvey);
+    }
+    
     // Language event listeners
     document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
     document.getElementById('lang-de').addEventListener('click', () => setLanguage('de'));
@@ -1865,6 +1871,12 @@ function resizeCanvas() {
 }
 
 // ==================== SURVEY FUNCTIONS ====================
+function closeSurvey() {
+    // Hide survey modal and return to start screen
+    screens.surveyModal.classList.add('hidden');
+    showScreen('start');
+}
+
 function startSurvey() {
     // Reset survey state
     surveyState = {
