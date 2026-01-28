@@ -500,6 +500,41 @@ html {
     border: 1px solid var(--siemens-orange-500);
 }
 
+/* Learning Suggestion */
+.learning-suggestion {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.learning-suggestion p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.learn-link {
+    display: inline-block;
+    color: var(--siemens-bold-green);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 12px 20px;
+    border: 1px solid var(--siemens-bold-green);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.learn-link:active {
+    background: rgba(0, 255, 185, 0.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .learn-link:hover {
+        background: rgba(0, 255, 185, 0.1);
+        transform: translateY(-1px);
+    }
+}
+
 /* Survey Link Container */
 .survey-link-container {
     display: flex;

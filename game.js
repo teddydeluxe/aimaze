@@ -59,7 +59,8 @@ const TRANSLATIONS = {
         // Grades
         aiExpert: "AI Expert!",
         aiEnthusiast: "AI Enthusiast!",
-        keepLearning: "Keep Learning!"
+        keepLearning: "Keep Learning!",
+        learnMoreSuggestion: "Want to learn more about AI?"
     },
     de: {
         // Start Screen
@@ -116,7 +117,8 @@ const TRANSLATIONS = {
         // Grades
         aiExpert: "KI-Experte!",
         aiEnthusiast: "KI-Enthusiast!",
-        keepLearning: "Weiter lernen!"
+        keepLearning: "Weiter lernen!",
+        learnMoreSuggestion: "Möchtest du mehr über KI erfahren?"
     },
     fr: {
         // Start Screen
@@ -173,7 +175,8 @@ const TRANSLATIONS = {
         // Grades
         aiExpert: "Expert en IA !",
         aiEnthusiast: "Passionné d'IA !",
-        keepLearning: "Continuez à apprendre !"
+        keepLearning: "Continuez à apprendre !",
+        learnMoreSuggestion: "Envie d'en savoir plus sur l'IA ?"
     },
     es: {
         // Start Screen
@@ -230,7 +233,8 @@ const TRANSLATIONS = {
         // Grades
         aiExpert: "¡Experto en IA!",
         aiEnthusiast: "¡Entusiasta de IA!",
-        keepLearning: "¡Sigue aprendiendo!"
+        keepLearning: "¡Sigue aprendiendo!",
+        learnMoreSuggestion: "¿Quieres aprender más sobre IA?"
     }
 };
 
@@ -1666,16 +1670,21 @@ function showResults() {
     // Calculate grade
     const percentage = (gameState.correctAnswers / CONFIG.totalQuestions) * 100;
     const gradeEl = document.getElementById('grade');
+    const learningSuggestion = document.getElementById('learning-suggestion');
     
     if (percentage >= 80) {
         gradeEl.textContent = '🏆 ' + t('aiExpert');
         gradeEl.className = 'grade excellent';
+        learningSuggestion.classList.add('hidden');
     } else if (percentage >= 50) {
         gradeEl.textContent = '⭐ ' + t('aiEnthusiast');
         gradeEl.className = 'grade good';
+        learningSuggestion.classList.add('hidden');
     } else {
         gradeEl.textContent = '📚 ' + t('keepLearning');
         gradeEl.className = 'grade average';
+        // Show learning suggestion for "Keep Learning" level
+        learningSuggestion.classList.remove('hidden');
     }
     
     showScreen('results');
