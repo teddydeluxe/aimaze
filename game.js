@@ -963,6 +963,12 @@ function startGame() {
     showScreen('game');
     updateUI();
     
+    // Resize canvas after screen is visible (fixes initial render issue)
+    // Use multiple timing strategies to ensure it works across browsers
+    resizeCanvas();
+    requestAnimationFrame(() => resizeCanvas());
+    setTimeout(() => resizeCanvas(), 50);
+    
     // Start game loop
     requestAnimationFrame(gameLoop);
 }
